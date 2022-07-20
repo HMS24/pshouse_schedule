@@ -81,4 +81,5 @@ ENV/
 
 # myself
 temp/
+results/
 debug.log
