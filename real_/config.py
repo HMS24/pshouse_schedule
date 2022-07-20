@@ -1,0 +1,1 @@
+STORE_ROOT_DIR = './results'
