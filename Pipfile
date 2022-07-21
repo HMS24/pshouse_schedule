@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "*"
+cloudstorage = {extras = ["local"], version = "*"}
 
 [dev-packages]
 autopep8 = "*"
