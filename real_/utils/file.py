@@ -6,7 +6,7 @@ from real_ import config
 
 
 def extract_to(folderpath, content):
-    Path(config.STORE_ROOT_DIR).mkdir(parents=True, exist_ok=True)
+    Path(config.STORAGE_ROOT_DIR).mkdir(parents=True, exist_ok=True)
 
     with ZipFile(BytesIO(content), 'r') as zipf:
         zipf.extractall(folderpath)
