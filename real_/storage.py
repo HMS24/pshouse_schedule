@@ -6,6 +6,7 @@ from real_ import config
 
 logger = logging.getLogger()
 
+
 class Storage:
     def __init__(self, dir_name=''):
         self.driver_cls = get_driver_by_name(config.STORAGE_TYPE)
