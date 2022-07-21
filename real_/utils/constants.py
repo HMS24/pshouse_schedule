@@ -13,3 +13,8 @@ HEADERS = {
     "User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36 Edg/103.0.1264.37',
     "X-Requested-With": 'XMLHttpRequest',
 }
+
+# BYTE_ORDER_MARK
+BOM_BIG_ENDIAN = '\ufeff'
+BOM_LITTLE_ENDIAN = '\ufffe'
+UTF16_BOM = (BOM_BIG_ENDIAN, BOM_LITTLE_ENDIAN)

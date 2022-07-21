@@ -13,15 +13,15 @@ def process_real_estate():
     logger.info('step: process_real_estate')
 
     year, season = sys.argv[1:3]
-    resp = fetch_real_estate(year, season)
+    real_estate_info = fetch_real_estate(year, season)
 
-    if not resp:
+    if real_estate_info is None:
         return
 
     save_to_storage(
         dir_name=f'{year}S{season}',
         filepath=Path(config.STORAGE_ROOT_DIR).joinpath('F_lvr_land_B.csv'),
-        content=resp.text
+        content=real_estate_info
     )
 
     # parse

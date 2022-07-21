@@ -19,11 +19,16 @@ def fetch_real_estate(year, season) -> None:
     }
 
     try:
-        return requests.get(
+        resp = requests.get(
             url='https://plvr.land.moi.gov.tw//DownloadSeason',
             params=params,
             headers=constants.HEADERS
         )
+
+        if not resp.text.startswith(constants.UTF16_BOM):
+            raise Exception(f'dataset {year}S{season} has not been updated')
+
+        return resp.text
     except Exception as e:
         logger.warning(f'fetch error: {repr(e)}')
 
