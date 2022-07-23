@@ -26,7 +26,7 @@ zh_en_map = {
     '車位移轉總面積平方公尺': 'parking_sapce_total_area',
     '車位總價元': 'parking_sapce_price',
     '備註': 'note',
-    '建案名稱': 'build_case',
+    '建案名稱': 'build_name',
     '棟及號': 'buildings',
 }
 
@@ -51,7 +51,7 @@ class RealEstateInfo(BaseModel):
     parking_sapce_type: str = None
     parking_sapce_price: int = 0
     note: str = None
-    build_case: str = None
+    build_name: str = None
     buildings: str = None
 
 
@@ -116,6 +116,6 @@ def parse_real_estate_info(df):
             f'real estate parse failed: {repr(e)}    ',
             f'district: {row["district"]}, ',
             f'transaction_date: {row["transaction_date"]}, ',
-            f'build_case: {row["build_case"]}, ',
+            f'build_name: {row["build_name"]}, ',
             f'buildings: {row["buildings"]}, ',
         )
