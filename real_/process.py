@@ -8,6 +8,7 @@ from real_ import config
 from real_.fetch import fetch_real_estate
 from real_.storage import save_to_storage
 from real_.parse import parse_real_estate_info
+from real_.load import load_into_database
 
 logger = logging.getLogger()
 
@@ -34,4 +35,4 @@ def process_real_estate():
         df = pd.read_csv(f)
         real_estate_info = parse_real_estate_info(df)
 
-    # load into database
+    load_into_database(real_estate_info)
