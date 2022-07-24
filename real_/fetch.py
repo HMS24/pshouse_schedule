@@ -25,7 +25,9 @@ def fetch_real_estate(year, season) -> None:
             headers=constants.HEADERS
         )
 
-        if not resp.text.startswith(constants.UTF16_BOM):
+        # 當找不到該季或不正確的 fileName 時，會回傳 "系統發生錯誤，請洽系統管理人員" 的 html
+        # 假設內政部的錯誤網頁不太會變動，判斷 Content-Length 比較快，
+        if int(resp.headers['Content-Length']) == 541:
             raise Exception(f'dataset {year}S{season} has not been updated')
 
         return resp.text
