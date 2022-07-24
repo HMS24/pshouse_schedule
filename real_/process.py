@@ -24,7 +24,6 @@ def process_real_estate():
     if content is None:
         return
 
-    # save as a local file then upload storage
     save_to_storage(
         dir_name=f'{year}S{season}',
         filepath=Path(config.STORAGE_ROOT_DIR).joinpath('F_lvr_land_B.csv'),
@@ -32,6 +31,7 @@ def process_real_estate():
     )
 
     # encoding 'utf-8-sig' for escaping UTF16_BOM
+    # quoting 'csv.QUOTE_NONE' 欄位會有誤輸入 quote 的時候
     df = pd.read_csv(
         StringIO(content),
         encoding='utf-8-sig',
