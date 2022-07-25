@@ -73,21 +73,8 @@ def parse_real_estate_info(df):
     df = df.copy()
 
     # get needed columns
-    try:
-        df = df[zh_en_map.keys()]
-    except KeyError as e:
-        # e.g. 'KeyError("[\'棟及號\'] not in index")'
-        pattern = r"'(.*)'"
-        matched = re.search(pattern, repr(e)).group(1)
-        exclude_cols = [
-            col.strip().replace('\'', '')
-            for col in matched.split(',')
-        ]
-
-        for col in exclude_cols:
-            zh_en_map.pop(col)
-
-        df = df[zh_en_map.keys()]
+    columns = list(set(df.columns).intersection(set(zh_en_map)))
+    df = df[columns]
 
     # translate columns name
     df.columns = translate_column_names(df.columns, zh_en_map)
@@ -103,7 +90,7 @@ def parse_real_estate_info(df):
     )
 
     # fill NaN
-    for col in zh_en_map.values():
+    for col in df.columns:
         if col in ['transaction_date']:
             continue
         elif col in [
