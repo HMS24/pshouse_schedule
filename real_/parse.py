@@ -1,3 +1,4 @@
+import re
 import logging
 from datetime import datetime
 
@@ -72,13 +73,27 @@ def parse_real_estate_info(df):
     df = df.copy()
 
     # get needed columns
-    df = df[zh_en_map.keys()]
+    try:
+        df = df[zh_en_map.keys()]
+    except KeyError as e:
+        # e.g. 'KeyError("[\'棟及號\'] not in index")'
+        pattern = r"'(.*)'"
+        matched = re.search(pattern, repr(e)).group(1)
+        exclude_cols = [
+            col.strip().replace('\'', '')
+            for col in matched.split(',')
+        ]
+
+        for col in exclude_cols:
+            zh_en_map.pop(col)
+
+        df = df[zh_en_map.keys()]
 
     # translate columns name
     df.columns = translate_column_names(df.columns, zh_en_map)
 
     # remove english description row(usually second row)
-    en_column_name_index = df[df['buildings'] == 'buildings'].index
+    en_column_name_index = df[df['main_use'] == 'main use'].index
     df = df.drop(en_column_name_index)
 
     # parse ROC date
