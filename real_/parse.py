@@ -33,27 +33,27 @@ zh_en_map = {
 
 
 class RealEstateInfo(BaseModel):
-    district: str = None
-    object_of_transaction: str = None
-    location: str = None
+    district: str = ''
+    object_of_transaction: str = ''
+    location: str = ''
     transaction_date: datetime = None
-    level: str = None
-    total_floor_numbers: str = None
-    main_use: str = None
-    building_state: str = None
-    room: str = None
-    restaurant_and_living_room: str = None
-    bathroom: str = None
+    level: str = ''
+    total_floor_numbers: str = ''
+    main_use: str = ''
+    building_state: str = ''
+    room: str = ''
+    restaurant_and_living_room: str = ''
+    bathroom: str = ''
     land_total_area: float = 0.00
     building_total_area: float = 0.00
     parking_sapce_total_area: float = 0.00
     price: int = 0
     unit_price: int = 0
-    parking_sapce_type: str = None
+    parking_sapce_type: str = ''
     parking_sapce_price: int = 0
-    note: str = None
-    build_name: str = None
-    buildings: str = None
+    note: str = ''
+    build_name: str = ''
+    buildings: str = ''
 
 
 def translate_column_names(columns, mapper):
