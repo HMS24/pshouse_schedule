@@ -21,7 +21,7 @@ class NewTaipeiCitySchema(Base):
     # info
     district = Column(String(8), nullable=False, index=True)
     object_of_transaction = Column(String(16), nullable=False)
-    location = Column(String(32), nullable=False)
+    location = Column(String(128), nullable=False)
     transaction_date = Column(DATE, nullable=False, index=True)
     level = Column(String(8), nullable=False)
     total_floor_numbers = Column(String(8), nullable=False)
@@ -31,11 +31,11 @@ class NewTaipeiCitySchema(Base):
     # area, room and buildings name
     land_total_area = Column(Float, nullable=False)
     building_total_area = Column(Float, nullable=False)
-    room = Column(String(2), nullable=False)
-    restaurant_and_living_room = Column(String(2), nullable=False)
-    bathroom = Column(String(2), nullable=False)
+    room = Column(String(8), nullable=False)
+    restaurant_and_living_room = Column(String(8), nullable=False)
+    bathroom = Column(String(8), nullable=False)
     build_name = Column(String(32), nullable=False, index=True)
-    buildings = Column(String(16), nullable=False)
+    buildings = Column(String(32), nullable=False)
 
     # car
     parking_sapce_type = Column(String(8), nullable=False)
