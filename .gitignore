@@ -83,3 +83,4 @@ ENV/
 temp/
 results/
 debug.log
+*.csv
