@@ -3,7 +3,7 @@ from real_.db.schemas import NewTaipeiCitySchema
 
 class NewTaipeiCityModel(NewTaipeiCitySchema):
 
-    __tablename__ = "new_taipei_city:"
+    __tablename__ = "new_taipei_city"
 
     def __repr__(self):
         return f"""<NewTaipeiCityModel(
