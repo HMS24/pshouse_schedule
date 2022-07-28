@@ -1,7 +1,7 @@
 import logging
 
 import requests
-from real_.utils import constants
+from presale.utils import constants
 
 logger = logging.getLogger()
 

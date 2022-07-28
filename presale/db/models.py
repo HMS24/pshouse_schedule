@@ -1,4 +1,4 @@
-from real_.db.schemas import NewTaipeiCitySchema
+from presale.db.schemas import NewTaipeiCitySchema
 
 
 class NewTaipeiCityModel(NewTaipeiCitySchema):

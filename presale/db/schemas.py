@@ -9,7 +9,7 @@ from sqlalchemy import (
     DateTime,
 )
 
-from real_.db.database import Base
+from presale.db.database import Base
 
 
 class NewTaipeiCitySchema(Base):

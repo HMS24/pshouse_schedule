@@ -1,11 +1,11 @@
 import logging
 from pathlib import Path
 
-from real_ import config
-from real_.fetch import fetch_actual_price_registration
-from real_.parse import parse_actual_price_registration
-from real_.storage import save_to_storage
-from real_.load import load_into_database
+from presale import config
+from presale.fetch import fetch_actual_price_registration
+from presale.parse import parse_actual_price_registration
+from presale.storage import save_to_storage
+from presale.load import load_into_database
 
 logger = logging.getLogger()
 

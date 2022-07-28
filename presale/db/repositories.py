@@ -1,4 +1,4 @@
-from real_.db.models import NewTaipeiCityModel
+from presale.db.models import NewTaipeiCityModel
 
 
 class NewTaipeiCityRepository:

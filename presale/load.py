@@ -1,8 +1,8 @@
 import logging
 
-from real_.db.database import Database
-from real_.db.repositories import NewTaipeiCityRepository
-from real_.db.services import NewTaipeiCityService
+from presale.db.database import Database
+from presale.db.repositories import NewTaipeiCityRepository
+from presale.db.services import NewTaipeiCityService
 
 logger = logging.getLogger()
 db = Database("")

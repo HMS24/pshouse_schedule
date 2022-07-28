@@ -1,7 +1,7 @@
 import sys
 import logging
 
-from real_.process import process_actual_price_registration
+from presale.process import process_actual_price_registration
 
 logging.basicConfig(
     level=logging.INFO,

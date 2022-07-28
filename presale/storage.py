@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from cloudstorage import get_driver_by_name
 
-from real_ import config
+from presale import config
 
 logger = logging.getLogger()
 

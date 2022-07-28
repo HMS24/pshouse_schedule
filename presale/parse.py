@@ -6,8 +6,8 @@ from datetime import datetime
 import pandas as pd
 from pydantic import ValidationError
 
-from real_.models import ActualPriceRegistrationInfo
-from real_.utils import mapping
+from presale.models import ActualPriceRegistrationInfo
+from presale.utils import mapping
 
 logger = logging.getLogger()
 
