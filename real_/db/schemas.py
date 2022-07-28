@@ -24,16 +24,16 @@ class NewTaipeiCitySchema(Base):
     location = Column(String(128), nullable=False)
     transaction_date = Column(DATE, nullable=False, index=True)
     level = Column(String(8), nullable=False)
-    total_floor_numbers = Column(String(8), nullable=False)
+    total_floor_numbers = Column(String(2), nullable=False)
     building_state = Column(String(16), nullable=False)
     main_use = Column(String(16), nullable=False)
 
     # area, room and buildings name
     land_total_area = Column(Float, nullable=False)
     building_total_area = Column(Float, nullable=False)
-    room = Column(String(8), nullable=False)
-    restaurant_and_living_room = Column(String(8), nullable=False)
-    bathroom = Column(String(8), nullable=False)
+    room = Column(String(1), nullable=False)
+    restaurant_and_living_room = Column(String(1), nullable=False)
+    bathroom = Column(String(1), nullable=False)
     build_name = Column(String(32), nullable=False, index=True)
     buildings = Column(String(32), nullable=False)
 
