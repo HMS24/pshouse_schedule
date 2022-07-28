@@ -6,12 +6,11 @@ from real_.utils import constants
 logger = logging.getLogger()
 
 
-def fetch_real_estate(year, season) -> None:
-    logger.info("step: fetch_real_estate")
+def fetch_actual_price_registration(year, season):
+    logger.info("   step: fetch_actual_price_registration")
 
     year = int(year)
-    if year > 1000:
-        year -= 1911
+    year -= 1911 if year > 1000 else year
 
     params = {
         "season": f"{year}S{season}",
@@ -22,7 +21,7 @@ def fetch_real_estate(year, season) -> None:
         resp = requests.get(
             url="https://plvr.land.moi.gov.tw//DownloadSeason",
             params=params,
-            headers=constants.HEADERS
+            headers=constants.HEADERS,
         )
 
         # 當找不到該季或不正確的 fileName 時，會回傳 "系統發生錯誤，請洽系統管理人員" 的 html
@@ -32,6 +31,6 @@ def fetch_real_estate(year, season) -> None:
 
         return resp.text
     except Exception as e:
-        logger.warning(f"fetch error: {repr(e)}")
+        logger.warning(f"   fetch error: {repr(e)}")
 
         return None

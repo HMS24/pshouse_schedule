@@ -1,6 +1,7 @@
+import sys
 import logging
 
-from real_.process import process_real_estate
+from real_.process import process_actual_price_registration
 
 logging.basicConfig(
     level=logging.INFO,
@@ -10,7 +11,8 @@ logging.basicConfig(
 
 
 def main():
-    process_real_estate()
+    year, season = sys.argv[1:3]
+    process_actual_price_registration(year, season)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, validator
 
 
-class RealEstateInfo(BaseModel):
+class ActualPriceRegistrationInfo(BaseModel):
     district: str = ""
     object_of_transaction: str = ""
     location: str = ""
