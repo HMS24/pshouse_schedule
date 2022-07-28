@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import pandas as pd
 from pydantic import ValidationError
 
 from real_.models import RealEstateInfo
@@ -59,18 +60,18 @@ def parse_real_estate_info(df):
             df[col] = df[col].fillna("")
 
     # cast type
-    try:
-        # why not use comprehension? because easily debug when using row
-        results = []
-        for row in df.to_dict("records"):
-            results.append(RealEstateInfo(**row).dict())
+    results = []
+    need_checked = []
+    for record in df.to_dict("records"):
+        try:
+            results.append(RealEstateInfo(**record).dict())
+        except ValidationError as e:
+            error_message = repr(e)
+            logger.warning(f"real estate parse failed: {error_message}")
 
-        return results
-    except ValidationError as e:
-        logger.warning(
-            f"real estate parse failed: {repr(e)}    ",
-            f"district: {row['district']}, ",
-            f"transaction_date: {row['transaction_date']}, ",
-            f"build_name: {row['build_name']}, ",
-            f"buildings: {row['buildings']}, ",
-        )
+            record['error_message'] = error_message
+            need_checked.append(record)
+
+    pd.DataFrame(need_checked).to_csv(f'results/need_checked.csv')
+
+    return results

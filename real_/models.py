@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class RealEstateInfo(BaseModel):
@@ -25,3 +25,8 @@ class RealEstateInfo(BaseModel):
     note: str = ""
     build_name: str = ""
     buildings: str = ""
+
+    @validator("bathroom", "room", "restaurant_and_living_room")
+    def validate_room_numbers(cls, val):
+        assert int(val) < 10, f"There are too many rooms. {val} rooms?"
+        return val
