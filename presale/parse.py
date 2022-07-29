@@ -34,21 +34,16 @@ def parse_actual_price_registration(raw):
         quoting=csv.QUOTE_NONE,
     )
 
-    # get needed columns
-    columns = list(set(df.columns).intersection(set(mapping.zh_en_map)))
+    columns = list(set(df.columns).intersection(set(mapping.zh_map_en)))
     df = df[columns]
-
-    # translate columns name
-    df.columns = _translate_column_names(df.columns, mapping.zh_en_map)
+    df.columns = _translate_column_names(df.columns, mapping.zh_map_en)
 
     # remove english description row(usually second row)
     en_row_index = df[df["main_use"] == "main use"].index
     df = df.drop(en_row_index)
 
-    # parse ROC date
     df["transaction_date"] = df["transaction_date"].apply(_roc_to_ad_date)
 
-    # fill NaN
     for col in df.columns:
         if col in ["transaction_date"]:
             continue
