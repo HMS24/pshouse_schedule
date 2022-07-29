@@ -2,7 +2,7 @@ import json
 import logging
 
 from presale.fetch import fetch_actual_price_registration
-from presale.parse import parse_actual_price_registration
+from presale.parse import parse_actual_price_registration, transform
 from presale.storage import save_to_storage
 from presale.load import load_into_database
 
@@ -26,6 +26,8 @@ def process_actual_price_registration(year, season):
     info, need_checked = parse_actual_price_registration(content)
     load_into_database(info)
 
+
+    need_checked = transform(need_checked)
     save_to_storage(
         dirname=f"{year}_{season}",
         filename="F_lvr_land_B_need_checked.json",

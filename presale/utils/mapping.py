@@ -21,3 +21,5 @@ zh_en_map = {
     "建案名稱": "build_name",
     "棟及號": "buildings",
 }
+
+en_zh_map = {value: key for key, value in zh_en_map.items()}

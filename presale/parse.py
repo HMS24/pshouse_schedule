@@ -13,7 +13,7 @@ logger = logging.getLogger()
 
 
 def _translate_column_names(columns, mapper):
-    return [mapper[col] for col in columns]
+    return [mapper.get(col, col) for col in columns]
 
 
 def _roc_to_ad_date(date_str):
@@ -23,13 +23,13 @@ def _roc_to_ad_date(date_str):
     return datetime.strptime(date_str, "%Y%m%d")
 
 
-def parse_actual_price_registration(content):
+def parse_actual_price_registration(raw):
     logger.info("   step: parse_actual_price_registration")
 
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
     df = pd.read_csv(
-        io.BytesIO(content),
+        io.BytesIO(raw),
         encoding="utf-8-sig",
         quoting=csv.QUOTE_NONE,
     )
@@ -74,7 +74,14 @@ def parse_actual_price_registration(content):
             logger.warning("    parse actual price registration failed")
 
             record["error_message"] = repr(e)
-            record["transaction_date"] = datetime.strftime(record["transaction_date"], "%Y%m%d")
             need_checked.append(record)
 
     return results, need_checked
+
+
+def transform(rows):
+    df = pd.DataFrame(rows)
+    df["transaction_date"] = df["transaction_date"].astype(str)
+    df.columns = _translate_column_names(df.columns, mapping.en_zh_map)
+
+    return df.to_dict("records")
