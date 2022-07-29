@@ -79,9 +79,14 @@ def parse_actual_price_registration(raw):
     return results, need_checked
 
 
-def transform(rows):
-    df = pd.DataFrame(rows)
+def parse_problem_actual_price_registration(records):
+    logger.info("   step: parse_problem_actual_price_registration")
+
+    if not records:
+        return
+
+    df = pd.DataFrame(records)
     df["transaction_date"] = df["transaction_date"].astype(str)
-    df.columns = _translate_column_names(df.columns, mapping.en_zh_map)
+    df.columns = _translate_column_names(df.columns, mapping.en_map_zh)
 
     return df.to_dict("records")

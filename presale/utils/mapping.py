@@ -1,4 +1,4 @@
-zh_en_map = {
+zh_map_en = {
     "鄉鎮市區": "district",
     "交易標的": "object_of_transaction",
     "土地位置建物門牌": "location",
@@ -22,4 +22,4 @@ zh_en_map = {
     "棟及號": "buildings",
 }
 
-en_zh_map = {value: key for key, value in zh_en_map.items()}
+en_map_zh = {value: key for key, value in zh_map_en.items()}
