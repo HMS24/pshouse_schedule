@@ -23,16 +23,18 @@ class Storage:
         self.container.upload_blob(filepath_or_fileobj, **kwargs)
 
 
-def save_to_storage(dirname, filename, content):
+def save_to_storage(dirname, filename, content, filepath=None):
     logger.info("   step: save_to_storage")
 
     Path(config.STORAGE_ROOT_DIR).mkdir(parents=True, exist_ok=True)
 
     try:
+        filepath_or_fileobj = filepath if filepath else io.BytesIO(content)
+
         s = Storage(dirname)
         s.upload(
-            filepath_or_fileobj=io.BytesIO(content),
-            blob_name=f'{filename}',
+            filepath_or_fileobj=filepath_or_fileobj,
+            blob_name=filename,
         )
     except Exception as e:
         logger.warning(f"   storage error: {repr(e)}")

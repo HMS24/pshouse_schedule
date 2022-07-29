@@ -73,7 +73,8 @@ def parse_actual_price_registration(content):
         except ValidationError as e:
             logger.warning("    parse actual price registration failed")
 
-            record['error_message'] = repr(e)
+            record["error_message"] = repr(e)
+            record["transaction_date"] = datetime.strftime(record["transaction_date"], "%Y%m%d")
             need_checked.append(record)
 
     return results, need_checked
