@@ -1,6 +1,6 @@
 import csv
 import logging
-from io import StringIO
+import io
 from datetime import datetime
 
 import pandas as pd
@@ -29,7 +29,7 @@ def parse_actual_price_registration(content):
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
     df = pd.read_csv(
-        StringIO(content),
+        io.BytesIO(content),
         encoding="utf-8-sig",
         quoting=csv.QUOTE_NONE,
     )

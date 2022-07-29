@@ -1,7 +1,5 @@
 import logging
-from pathlib import Path
 
-from presale import config
 from presale.fetch import fetch_actual_price_registration
 from presale.parse import parse_actual_price_registration
 from presale.storage import save_to_storage
@@ -19,8 +17,8 @@ def process_actual_price_registration(year, season):
         return
 
     save_to_storage(
-        dir_name=f"{year}_{season}",
-        filepath=Path(config.STORAGE_ROOT_DIR).joinpath("F_lvr_land_B.csv"),
+        dirname=f"{year}_{season}",
+        filename="F_lvr_land_B.csv",
         content=content,
     )
 

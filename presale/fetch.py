@@ -29,7 +29,7 @@ def fetch_actual_price_registration(year, season):
         if int(resp.headers["Content-Length"]) == 541:
             raise Exception(f"dataset {year}S{season} has not been updated")
 
-        return resp.text
+        return resp.content
     except Exception as e:
         logger.warning(f"   fetch error: {repr(e)}")
 
