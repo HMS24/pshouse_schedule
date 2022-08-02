@@ -1,5 +1,6 @@
 import json
 import logging
+import datetime
 
 from presale.fetch import fetch_actual_price_registration
 from presale.parse import (
@@ -12,16 +13,17 @@ from presale.load import load_into_database
 logger = logging.getLogger()
 
 
-def process_actual_price_registration(year, season):
+def process_actual_price_registration():
     logger.info("start process_actual_price_registration")
 
-    content = fetch_actual_price_registration(year, season)
+    content = fetch_actual_price_registration()
 
     if content is None:
         return
 
+    today = str(datetime.datetime.now().date())
     save_to_storage(
-        dirname=f"{year}_{season}",
+        dirname=f"{today}",
         filename="F_lvr_land_B.csv",
         content=content,
     )
@@ -31,7 +33,7 @@ def process_actual_price_registration(year, season):
 
     need_checked = parse_problem_actual_price_registration(need_checked)
     save_to_storage(
-        dirname=f"{year}_{season}",
+        dirname=f"{today}",
         filename="F_lvr_land_B_need_checked.json",
         content=json.dumps(
             obj=need_checked,
