@@ -2,7 +2,7 @@ import time
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from presale.process import process_actual_price_registration
+from presale.schedulers.jobs import JOBS
 
 logging.basicConfig(
     level=logging.INFO,
@@ -13,19 +13,11 @@ logging.basicConfig(
 
 def main():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(
-        id="crawl_presale_actual_price_registration",
-        func=process_actual_price_registration,
-        trigger="cron",
-        year="*",
-        month="*",
-        day="1, 11, 21",
-        hour="10",
-        minute="0",
-    )
+
+    for job in JOBS:
+        scheduler.add_job(**job)
     scheduler.start()
 
-    # This is here to simulate application activity (which keeps the main thread alive).
     while True:
         time.sleep(2)
 

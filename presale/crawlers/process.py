@@ -2,13 +2,13 @@ import json
 import logging
 import datetime
 
-from presale.fetch import fetch_actual_price_registration
-from presale.parse import (
+from presale.crawlers.fetch import fetch_actual_price_registration
+from presale.crawlers.parse import (
     parse_actual_price_registration,
     parse_problem_actual_price_registration,
 )
-from presale.storage import save_to_storage
-from presale.load import load_into_database
+from presale.crawlers.storage import save_to_storage
+from presale.crawlers.load import load_into_database
 
 logger = logging.getLogger()
 
