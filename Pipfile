@@ -10,6 +10,7 @@ pandas = "*"
 pydantic = "*"
 sqlalchemy = "==1.4.39"
 pymysql = "*"
+apscheduler = "*"
 
 [dev-packages]
 autopep8 = "*"
