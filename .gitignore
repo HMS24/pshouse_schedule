@@ -76,11 +76,9 @@ ENV/
 # System
 *.DS_store
 
-# code style
-*.pylintrc
-
 # myself
+*.pylintrc
+.pep8
+*.db
 temp/
-results/
 debug.log
-*.csv
