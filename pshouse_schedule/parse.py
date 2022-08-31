@@ -1,13 +1,13 @@
-import csv
-import logging
 import io
+import logging
+import csv
 from datetime import datetime
 
 import pandas as pd
 from pydantic import ValidationError
 
-from presale.crawlers.models import ActualPriceRegistrationInfo
-from presale.utils import mapping
+import pshouse_schedule.utils as utils
+from pshouse_schedule.schemas import Deal
 
 logger = logging.getLogger()
 
@@ -23,8 +23,8 @@ def _roc_to_ad_date(date_str):
     return datetime.strptime(date_str, "%Y%m%d")
 
 
-def parse_actual_price_registration(raw):
-    logger.info("   step: parse_actual_price_registration")
+def parse_deal_info(raw):
+    logger.info("   step: parse_deal_info")
 
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
@@ -34,9 +34,9 @@ def parse_actual_price_registration(raw):
         quoting=csv.QUOTE_NONE,
     )
 
-    columns = list(set(df.columns).intersection(set(mapping.zh_map_en)))
+    columns = list(set(df.columns).intersection(set(utils.zh_en_map)))
     df = df[columns]
-    df.columns = _translate_column_names(df.columns, mapping.zh_map_en)
+    df.columns = _translate_column_names(df.columns, utils.zh_en_map)
 
     # remove english description row(usually second row)
     en_row_index = df[df["main_use"] == "main use"].index
@@ -64,9 +64,9 @@ def parse_actual_price_registration(raw):
     need_checked = []
     for record in df.to_dict("records"):
         try:
-            results.append(ActualPriceRegistrationInfo(**record).dict())
+            results.append(Deal(**record).dict())
         except ValidationError as e:
-            logger.warning("    parse actual price registration failed")
+            logger.warning("    parse deal info failed")
 
             record["error_message"] = repr(e)
             need_checked.append(record)
@@ -74,14 +74,14 @@ def parse_actual_price_registration(raw):
     return results, need_checked
 
 
-def parse_problem_actual_price_registration(records):
-    logger.info("   step: parse_problem_actual_price_registration")
+def parse_incorrect_deal(records):
+    logger.info("   step: parse_incorrect_deal")
 
     if not records:
         return
 
     df = pd.DataFrame(records)
     df["transaction_date"] = df["transaction_date"].astype(str)
-    df.columns = _translate_column_names(df.columns, mapping.en_map_zh)
+    df.columns = _translate_column_names(df.columns, utils.en_zh_map)
 
     return df.to_dict("records")
