@@ -14,7 +14,7 @@ Base = declarative_base()
 
 class Database:
     def __init__(self, uri):
-        self._engine = create_engine(uri, echo=False)
+        self._engine = create_engine(uri, echo=True)
         self._session_factory = scoped_session(
             sessionmaker(
                 autocommit=False,
