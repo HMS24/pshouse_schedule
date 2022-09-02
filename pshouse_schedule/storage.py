@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from cloudstorage import get_driver_by_name
 
-from . import config
+import config
 
 logger = logging.getLogger()
 
@@ -16,25 +16,23 @@ class Storage:
             secret=config.STORAGE_SECRET,
         )
         self.container = storage.create_container(
-            f"actual_price_registration/{dirname}"
+            f"deals/{dirname}"
         )
 
-    def upload(self, filepath_or_fileobj, **kwargs):
-        self.container.upload_blob(filepath_or_fileobj, **kwargs)
+    def upload(self, filepath):
+        self.container.upload_blob(filepath)
 
 
-def save_to_storage(dirname, filename, content, filepath=None):
+def save_to_storage(dirname, filepath, content):
     logger.info("   step: save_to_storage")
 
     Path(config.STORAGE_ROOT_DIR).mkdir(parents=True, exist_ok=True)
 
     try:
-        filepath_or_fileobj = filepath if filepath else io.BytesIO(content)
+        with open(filepath, "wb") as f:
+            f.write(content)
 
         s = Storage(dirname)
-        s.upload(
-            filepath_or_fileobj=filepath_or_fileobj,
-            blob_name=filename,
-        )
+        s.upload(filepath)
     except Exception as e:
         logger.warning(f"   storage error: {repr(e)}")
