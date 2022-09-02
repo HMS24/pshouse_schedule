@@ -1,4 +1,4 @@
-from presale.db.models import Deal as DealModel
+from pshouse_schedule.db.models import Deal as DealModel
 
 
 class Deal:

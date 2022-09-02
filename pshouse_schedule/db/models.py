@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 
-from presale.db.database import Base
+from pshouse_schedule.db.database import Base
 
 
 class Deal(Base):

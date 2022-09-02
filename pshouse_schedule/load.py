@@ -1,22 +1,18 @@
 import logging
 
-from presale.db.database import Database
-from presale.db.stores import NewTaipeiCityRepository
-from presale.db.services import NewTaipeiCityService
+from pshouse_schedule.db.database import Database
+from pshouse_schedule.db.stores import Deal
 
 logger = logging.getLogger()
-db = Database("mysql+pymysql://root:password@localhost:3306/pshouse")
+db = Database("")
 
 
 def load_into_database(rows):
     logger.info("   step: load_into_database")
 
-    service = NewTaipeiCityService(
-        session_factory=db.session,
-        repository_cls=NewTaipeiCityRepository,
-    )
+    deal = Deal(session_factory=db.session)
 
     try:
-        service.create_pre_sale_house_transactions(rows)
+        deal.bulk_insert(rows)
     except Exception as e:
         logger.warning(f"   load error: {repr(e)}")
