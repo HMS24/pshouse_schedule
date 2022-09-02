@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from cloudstorage import get_driver_by_name
 
-import config
+import pshouse_schedule.config as config
 
 logger = logging.getLogger()
 

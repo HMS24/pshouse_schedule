@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-import config
+import pshouse_schedule.config as config
 from pshouse_schedule.fetch import fetch_deals
 from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
@@ -19,6 +19,7 @@ def process_crawl_of_deals():
     content = fetch_deals()
 
     if content is None:
+        logger.info("start process_crawl_of_deals return None")
         return
 
     today = str(datetime.now().date())
