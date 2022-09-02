@@ -1,30 +1,24 @@
 import io
 import logging
 import csv
-from datetime import datetime
 
 import pandas as pd
 from pydantic import ValidationError
 
-import pshouse_schedule.utils as utils
+from pshouse_schedule.utils import (
+    zh_en_map,
+    en_zh_map,
+
+    translate_column_names,
+    roc_to_ad_date,
+)
 from pshouse_schedule.schemas import Deal
 
 logger = logging.getLogger()
 
 
-def _translate_column_names(columns, mapper):
-    return [mapper.get(col, col) for col in columns]
-
-
-def _roc_to_ad_date(date_str):
-    roc_year = date_str[:3]
-    date_str = str(int(roc_year) + 1911) + date_str[3:]
-
-    return datetime.strptime(date_str, "%Y%m%d")
-
-
-def parse_deal_info(raw):
-    logger.info("   step: parse_deal_info")
+def parse_deals_info(raw):
+    logger.info("   step: parse_deals_info")
 
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
@@ -34,15 +28,15 @@ def parse_deal_info(raw):
         quoting=csv.QUOTE_NONE,
     )
 
-    columns = list(set(df.columns).intersection(set(utils.zh_en_map)))
+    columns = list(set(df.columns).intersection(set(zh_en_map)))
     df = df[columns]
-    df.columns = _translate_column_names(df.columns, utils.zh_en_map)
+    df.columns = translate_column_names(df.columns, zh_en_map)
 
     # remove english description row(usually second row)
     en_row_index = df[df["main_use"] == "main use"].index
     df = df.drop(en_row_index)
 
-    df["transaction_date"] = df["transaction_date"].apply(_roc_to_ad_date)
+    df["transaction_date"] = df["transaction_date"].apply(roc_to_ad_date)
 
     for col in df.columns:
         if col in ["transaction_date"]:
@@ -59,7 +53,7 @@ def parse_deal_info(raw):
         else:
             df[col] = df[col].fillna("")
 
-    # cast type
+    # type conversion
     results = []
     need_checked = []
     for record in df.to_dict("records"):
@@ -74,14 +68,14 @@ def parse_deal_info(raw):
     return results, need_checked
 
 
-def parse_incorrect_deal(records):
-    logger.info("   step: parse_incorrect_deal")
+def parse_incorrect_deals_info(records):
+    logger.info("   step: parse_incorrect_deals_info")
 
     if not records:
         return
 
     df = pd.DataFrame(records)
     df["transaction_date"] = df["transaction_date"].astype(str)
-    df.columns = _translate_column_names(df.columns, utils.en_zh_map)
+    df.columns = translate_column_names(df.columns, en_zh_map)
 
     return df.to_dict("records")

@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 HEADERS = {
     "Accept": "application/json, text/javascript, */*; q=0.01",
     "Accept-Encoding": "gzip, deflate, br",
@@ -39,3 +42,14 @@ zh_en_map = {
 }
 
 en_zh_map = {value: key for key, value in zh_en_map.items()}
+
+
+def translate_column_names(columns, mapper):
+    return [mapper.get(col, col) for col in columns]
+
+
+def roc_to_ad_date(date_str):
+    roc_year = date_str[:3]
+    date_str = str(int(roc_year) + 1911) + date_str[3:]
+
+    return datetime.strptime(date_str, "%Y%m%d")
