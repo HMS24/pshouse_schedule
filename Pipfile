@@ -13,8 +13,6 @@ apscheduler = "==3.9.1"
 cloudstorage = {extras = ["local"], version = "0.11.0"}
 
 [dev-packages]
-autopep8 = "*"
-ipykernel = "*"
 
 [requires]
 python_version = "3.8"
