@@ -10,7 +10,7 @@ db = Database("")
 def load_into_database(rows):
     logger.info("   step: load_into_database")
 
-    deal = Deal(session_factory=db.session)
+    deal = Deal(db.session)
 
     try:
         deal.bulk_insert(rows)
