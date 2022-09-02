@@ -22,5 +22,11 @@ def main():
         time.sleep(2)
 
 
+def test():
+    from pshouse_schedule.processes import process_crawl_of_deals
+    process_crawl_of_deals()
+
+
 if __name__ == "__main__":
-    main()
+    # main()
+    test()
