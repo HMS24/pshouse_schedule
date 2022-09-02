@@ -2,7 +2,7 @@ import time
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from presale.jobs import JOBS
+from pshouse_schedule.jobs import JOBS
 
 logging.basicConfig(
     level=logging.INFO,

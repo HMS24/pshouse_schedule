@@ -1,10 +1,10 @@
-from presale.crawlers.process import process_actual_price_registration
+from pshouse_schedule.processes import process_crawl_of_deals
 
 
 JOBS = [
     {
-        "id": "crawl_actual_price_registration",
-        "func": process_actual_price_registration,
+        "id": "crawl_deals",
+        "func": process_crawl_of_deals,
         "trigger": "cron",
         "year": "*",
         "month": "*",
