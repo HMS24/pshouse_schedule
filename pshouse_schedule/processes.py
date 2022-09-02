@@ -26,7 +26,7 @@ def process_crawl_of_deals():
     save_to_storage(
         dirname=f"{today}",
         filepath=Path(config.STORAGE_ROOT_DIR).joinpath("F_lvr_land_B.csv"),
-        content=io.BytesIO(content),
+        content=content,
     )
 
     deals, deals_need_checked = parse_deals_info(content)
