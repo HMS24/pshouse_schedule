@@ -1,7 +1,6 @@
-import io
 import logging
-from pathlib import Path
 from cloudstorage import get_driver_by_name
+from cloudstorage.exceptions import NotFoundError
 
 import pshouse_schedule.config as config
 
@@ -15,9 +14,10 @@ class Storage:
             key=config.STORAGE_KEY,
             secret=config.STORAGE_SECRET,
         )
-        self.container = storage.create_container(
-            f"deals/{dirname}"
-        )
+        try:
+            self.container = storage.get_container(dirname)
+        except NotFoundError:
+            self.container = storage.create_container(dirname)
 
     def upload(self, filepath):
         self.container.upload_blob(filepath)
@@ -25,8 +25,6 @@ class Storage:
 
 def save_to_storage(dirname, filepath, content):
     logger.info("   step: save_to_storage")
-
-    Path(config.STORAGE_ROOT_DIR).mkdir(parents=True, exist_ok=True)
 
     try:
         with open(filepath, "wb") as f:

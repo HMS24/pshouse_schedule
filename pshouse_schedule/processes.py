@@ -1,4 +1,3 @@
-import io
 import json
 import logging
 from datetime import datetime
@@ -12,6 +11,9 @@ from pshouse_schedule.storage import save_to_storage
 
 logger = logging.getLogger()
 
+OUTPUT_PATH = Path(config.STORAGE_ROOT_DIR)
+OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
+
 
 def process_crawl_of_deals():
     logger.info("start process_crawl_of_deals")
@@ -22,10 +24,10 @@ def process_crawl_of_deals():
         logger.info("start process_crawl_of_deals return None")
         return
 
-    today = str(datetime.now().date())
+    today = datetime.now().strftime("%Y%m%d")
     save_to_storage(
-        dirname=f"{today}",
-        filepath=Path(config.STORAGE_ROOT_DIR).joinpath("F_lvr_land_B.csv"),
+        dirname=config.STORAGE_BUCKET_NAME,
+        filepath=OUTPUT_PATH.joinpath(f"{today}_F_lvr_land_B.csv"),
         content=content,
     )
 
@@ -34,9 +36,8 @@ def process_crawl_of_deals():
 
     deals_need_checked = parse_incorrect_deals_info(deals_need_checked)
     save_to_storage(
-        dirname=f"{today}",
-        filepath=Path(config.STORAGE_ROOT_DIR).joinpath(
-            "F_lvr_land_B_need_checked.json"),
+        dirname=config.STORAGE_BUCKET_NAME,
+        filepath=OUTPUT_PATH.joinpath(f"{today}_F_lvr_land_B_need_check.json"),
         content=json.dumps(
             obj=deals_need_checked,
             indent=4,
