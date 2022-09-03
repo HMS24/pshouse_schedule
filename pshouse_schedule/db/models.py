@@ -7,7 +7,11 @@ class Deal(Base):
 
     __tablename__ = "deals"
 
-    id = sa.Column(sa.BigInteger, primary_key=True)
+    # BigInteger type can't autoincrement for sqlite, due to cpu or memory 的開銷太大
+    id = sa.Column(
+        sa.BigInteger().with_variant(sa.Integer, "sqlite"),
+        primary_key=True,
+    )
 
     # 城市、地區、交易標的、位置、交易日期
     city = sa.Column(sa.String(3), nullable=False, default="新北市", index=True)

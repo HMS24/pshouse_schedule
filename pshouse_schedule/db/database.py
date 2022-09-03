@@ -23,6 +23,9 @@ class Database:
             ),
         )
 
+        if uri.startswith("sqlite"):
+            self.create_tables()
+
     def create_tables(self):
         Base.metadata.create_all(self._engine)
 
