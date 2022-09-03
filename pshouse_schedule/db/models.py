@@ -9,36 +9,39 @@ class Deal(Base):
 
     id = sa.Column(sa.BigInteger, primary_key=True)
 
-    # info
+    # 城市、地區、交易標的、位置、交易日期
     city = sa.Column(sa.String(3), nullable=False, default="新北市", index=True)
     district = sa.Column(sa.String(8), nullable=False, index=True)
     object_of_transaction = sa.Column(sa.String(16), nullable=False)
     location = sa.Column(sa.String(128), nullable=False)
     transaction_date = sa.Column(sa.DATE, nullable=False, index=True)
+
+    # 樓層、總樓層、主要用途、建物狀態
     level = sa.Column(sa.String(8), nullable=False)
     total_floor_numbers = sa.Column(sa.String(2), nullable=False)
-    building_state = sa.Column(sa.String(16), nullable=False)
     main_use = sa.Column(sa.String(16), nullable=False)
+    building_state = sa.Column(sa.String(16), nullable=False)
 
-    # area, room and buildings name
+    # 土地面積、建物面積、車位面積  (平方公尺)
     land_total_area = sa.Column(sa.Float, nullable=False)
     building_total_area = sa.Column(sa.Float, nullable=False)
+    parking_sapce_total_area = sa.Column(sa.Float, nullable=False)
+
+    # 房間數、客餐廳、衛浴
     room = sa.Column(sa.String(1), nullable=False)
     restaurant_and_living_room = sa.Column(sa.String(1), nullable=False)
     bathroom = sa.Column(sa.String(1), nullable=False)
+
+    # 備註、預售案名、預售棟名
+    note = sa.Column(sa.String(128), nullable=False)
     build_name = sa.Column(sa.String(32), nullable=False, index=True)
     buildings = sa.Column(sa.String(32), nullable=False)
 
-    # car
-    parking_sapce_type = sa.Column(sa.String(8), nullable=False)
-    parking_sapce_total_area = sa.Column(sa.Float, nullable=False)
-    parking_sapce_price = sa.Column(sa.Integer, nullable=False)
-
-    # price
+    # 總價、單價、車位類型、車位價格 (元)
     price = sa.Column(sa.Integer, nullable=False)
     unit_price = sa.Column(sa.Integer, nullable=False)
-
-    note = sa.Column(sa.String(128), nullable=False)
+    parking_sapce_type = sa.Column(sa.String(8), nullable=False)
+    parking_sapce_price = sa.Column(sa.Integer, nullable=False)
 
     created_at = sa.Column(sa.DateTime(timezone=True),
                            server_default=sa.func.now())
