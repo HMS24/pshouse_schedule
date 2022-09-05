@@ -56,6 +56,9 @@ def is_resource_updated():
     updated_list = [file[:8]
                     for file in os.listdir(config.STORAGE_ROOT_DIR)
                     if Path(file).suffix == ".csv"]
+    if not updated_list:
+        return True
+
     updated_list.sort(key=lambda date: datetime.strptime(date, "%Y%m%d"),
                       reverse=True)
     my_last_updated_date = updated_list[0]
