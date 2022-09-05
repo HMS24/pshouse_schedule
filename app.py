@@ -1,12 +1,12 @@
 import time
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.events import EVENT_JOB_EXECUTED
+from pshouse_schedule import scheduler
+from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 from pshouse_schedule.jobs import (
+    SCHEDULED_JOBS,
     JOBS,
-    CHECK_JOBS,
 )
 
 logging.basicConfig(
@@ -15,19 +15,28 @@ logging.basicConfig(
     handlers=[logging.FileHandler("debug.log"), logging.StreamHandler()],
 )
 
-scheduler = BackgroundScheduler()
-
 
 def event_job_executed_handler(event):
+    if event.job_id in (SCHEDULED_JOBS[0]["id"], JOBS[1]["id"]):
+        scheduler.add_job(**JOBS[0])
+
+
+def event_job_error_handler(event):
     if event.job_id == JOBS[0]["id"]:
-        scheduler.add_job(**CHECK_JOBS[0], next_run_time=datetime.now())
+        if isinstance(event.exception, Exception):
+            scheduler.add_job(
+                **JOBS[1],
+                next_run_time=datetime.now() + timedelta(hours=1),
+            )
 
 
 def main():
-    for job in JOBS:
+    for job in SCHEDULED_JOBS:
         scheduler.add_job(**job)
 
     scheduler.add_listener(event_job_executed_handler, EVENT_JOB_EXECUTED)
+    scheduler.add_listener(event_job_error_handler, EVENT_JOB_ERROR)
+
     scheduler.start()
 
     while True:

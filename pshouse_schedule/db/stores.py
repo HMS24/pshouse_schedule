@@ -10,3 +10,9 @@ class Deal:
         with self._session() as session:
             session.bulk_insert_mappings(DealModel, rows)
             session.commit()
+
+    def last(self):
+        with self._session() as session:
+            projections = (DealModel.id, DealModel.created_at)
+
+            return session.query(*projections).order_by(DealModel.id.desc()).first()

@@ -1,13 +1,16 @@
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, date
 from pathlib import Path
 
 import pshouse_schedule.config as config
+
+from pshouse_schedule import scheduler
 from pshouse_schedule.fetch import fetch_deals
 from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
-from pshouse_schedule.load import load_into_database
+from pshouse_schedule.load import load_into_database, db
 from pshouse_schedule.storage import save_to_storage
+from pshouse_schedule.db.stores import Deal
 
 logger = logging.getLogger()
 
@@ -47,10 +50,8 @@ def process_crawl_of_deals():
 
 def process_crawl_of_deals_check():
     logger.info("start process_crawl_of_deals_checked")
-    """
-        deal = Deal.get_last_deal()
-        if deal.created_at's date == today's date:
-            return
-        scheduler.add_job(process_crawl_of_deals, next_run_time=datetime.now() + 1 hour) 
-    """
-    pass
+
+    deal = Deal(db.session).last()
+
+    if deal.created_at.date() != date.today():
+        raise Exception("Deals haven't been loaded yet")
