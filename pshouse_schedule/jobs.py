@@ -1,12 +1,12 @@
 from pshouse_schedule.processes import (
-    process_crawl_of_deals,
-    process_crawl_of_deals_check,
+    crawl_deals,
+    check_deals_crawled,
 )
 
 SCHEDULED_JOBS = [
     {
         "id": "crawl_deals_schedule",
-        "func": process_crawl_of_deals,
+        "func": crawl_deals,
         "trigger": "cron",
         "year": "*",
         "month": "*",
@@ -19,10 +19,10 @@ SCHEDULED_JOBS = [
 JOBS = [
     {
         "id": "check_after_deals_crawled",
-        "func": process_crawl_of_deals_check,
+        "func": check_deals_crawled,
     },
     {
         "id": "crawl_deals_once",
-        "func": process_crawl_of_deals,
+        "func": crawl_deals,
     },
 ]

@@ -18,8 +18,8 @@ OUTPUT_PATH = Path(config.STORAGE_ROOT_DIR)
 OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
 
 
-def process_crawl_of_deals():
-    logger.info("start process_crawl_of_deals")
+def crawl_deals():
+    logger.info("start crawl_deals")
 
     content = fetch_deals()
 
@@ -48,8 +48,8 @@ def process_crawl_of_deals():
     )
 
 
-def process_crawl_of_deals_check():
-    logger.info("start process_crawl_of_deals_checked")
+def check_deals_crawled():
+    logger.info("start check_deals_crawled")
 
     deal = Deal(db.session).last()
 
