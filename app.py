@@ -2,8 +2,12 @@ import time
 import logging
 from datetime import datetime, timedelta
 
+from apscheduler.events import (
+    EVENT_JOB_EXECUTED,
+    EVENT_JOB_ERROR,
+)
+
 from pshouse_schedule import scheduler
-from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 from pshouse_schedule.jobs import (
     SCHEDULED_JOBS,
     JOBS,
@@ -49,5 +53,5 @@ def test():
 
 
 if __name__ == "__main__":
-    main()
-    # test()
+    # main()
+    test()
