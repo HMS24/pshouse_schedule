@@ -21,7 +21,6 @@ def process_crawl_of_deals():
     content = fetch_deals()
 
     if content is None:
-        logger.info("start process_crawl_of_deals return None")
         return
 
     today = datetime.now().strftime("%Y%m%d")
