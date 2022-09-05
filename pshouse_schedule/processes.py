@@ -43,3 +43,14 @@ def process_crawl_of_deals():
             ensure_ascii=False,
         ).encode("utf-8"),
     )
+
+
+def process_crawl_of_deals_check():
+    logger.info("start process_crawl_of_deals_checked")
+    """
+        deal = Deal.get_last_deal()
+        if deal.created_at's date == today's date:
+            return
+        scheduler.add_job(process_crawl_of_deals, next_run_time=datetime.now() + 1 hour) 
+    """
+    pass
