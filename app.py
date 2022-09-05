@@ -48,8 +48,8 @@ def main():
 
 
 def test():
-    from pshouse_schedule.processes import process_crawl_of_deals
-    process_crawl_of_deals()
+    from pshouse_schedule.processes import crawl_deals
+    crawl_deals()
 
 
 if __name__ == "__main__":
