@@ -13,8 +13,8 @@ Base = declarative_base()
 
 
 class Database:
-    def __init__(self, uri):
-        self._engine = create_engine(uri, echo=True)
+    def __init__(self, uri, engine_options):
+        self._engine = create_engine(uri, **engine_options)
         self._session_factory = scoped_session(
             sessionmaker(
                 autocommit=False,
