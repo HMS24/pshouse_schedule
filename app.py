@@ -1,6 +1,5 @@
 import time
 import logging
-from datetime import datetime, timedelta
 
 from apscheduler.events import (
     EVENT_JOB_EXECUTED,
@@ -8,9 +7,10 @@ from apscheduler.events import (
 )
 
 from pshouse_schedule import scheduler
+from pshouse_schedule.jobs import SCHEDULED_JOBS
 from pshouse_schedule.jobs import (
-    SCHEDULED_JOBS,
-    JOBS,
+    event_job_error_handler,
+    event_job_executed_handler,
 )
 
 logging.basicConfig(
@@ -20,22 +20,8 @@ logging.basicConfig(
 )
 
 
-def event_job_executed_handler(event):
-    if event.job_id in (SCHEDULED_JOBS[0]["id"], JOBS[1]["id"]):
-        scheduler.add_job(**JOBS[0])
-
-
-def event_job_error_handler(event):
-    if event.job_id == JOBS[0]["id"]:
-        if isinstance(event.exception, Exception):
-            scheduler.add_job(
-                **JOBS[1],
-                next_run_time=datetime.now() + timedelta(hours=1),
-            )
-
-
 def main():
-    for job in SCHEDULED_JOBS:
+    for job in SCHEDULED_JOBS.values():
         scheduler.add_job(**job)
 
     scheduler.add_listener(event_job_executed_handler, EVENT_JOB_EXECUTED)
@@ -44,7 +30,7 @@ def main():
     scheduler.start()
 
     while True:
-        time.sleep(2)
+        time.sleep(3600)
 
 
 def test():
@@ -53,5 +39,5 @@ def test():
 
 
 if __name__ == "__main__":
-    # main()
-    test()
+    main()
+    # test()

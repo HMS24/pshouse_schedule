@@ -10,6 +10,7 @@ from pshouse_schedule.fetch import fetch_deals
 from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
 from pshouse_schedule.storage import save_to_storage
+from pshouse_schedule.exceptions import NotUpdatedException
 from pshouse_schedule.db.stores import Deal
 
 logger = logging.getLogger()
@@ -54,4 +55,4 @@ def check_deals_crawled():
     deal = Deal(db.session).last()
 
     if deal.created_at.date() != date.today():
-        raise Exception("Deals haven't been loaded yet")
+        raise NotUpdatedException("Deals haven't been loaded yet")
