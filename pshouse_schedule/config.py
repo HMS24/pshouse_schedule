@@ -17,7 +17,7 @@ STORAGE_SECRET = os.getenv("STORAGE_SECRET") or "test-secret"
 SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI") or \
     "sqlite:///" + os.path.join(basedir, "app.db")
 SQLALCHEMY_ENGINE_OPTIONS = {
-    "echo": os.getenv("SQL_ECHO") or False
+    "echo": os.getenv("SQL_ECHO", "False") == "True"
 }
 
 SCHEDULER_TIMEZONE = "Asia/Taipei"
