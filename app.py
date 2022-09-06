@@ -33,11 +33,5 @@ def main():
         time.sleep(3600)
 
 
-def test():
-    from pshouse_schedule.processes import crawl_deals
-    crawl_deals()
-
-
 if __name__ == "__main__":
     main()
-    # test()

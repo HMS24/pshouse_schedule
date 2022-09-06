@@ -15,12 +15,10 @@ Base = declarative_base()
 class Database:
     def __init__(self, uri, engine_options):
         self._engine = create_engine(uri, **engine_options)
-        self._session_factory = scoped_session(
-            sessionmaker(
-                autocommit=False,
-                autoflush=False,
-                bind=self._engine,
-            ),
+        self._session_factory = sessionmaker(
+            autocommit=False,
+            autoflush=False,
+            bind=self._engine,
         )
 
         if uri.startswith("sqlite"):
