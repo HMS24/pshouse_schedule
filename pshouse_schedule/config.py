@@ -16,3 +16,5 @@ STORAGE_SECRET = os.getenv("STORAGE_SECRET") or "test-secret"
 
 DATABASE_URI = os.getenv("DATABASE_URI") or \
     "sqlite:///" + os.path.join(basedir, "app.db")
+
+SCHEDULER_TIMEZONE = "Asia/Taipei"
