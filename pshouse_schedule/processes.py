@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pshouse_schedule.config as config
 
-from pshouse_schedule import scheduler, db
+from pshouse_schedule import db
 from pshouse_schedule.fetch import fetch_deals
 from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
