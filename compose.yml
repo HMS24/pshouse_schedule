@@ -6,6 +6,7 @@ services:
     restart: always
     volumes:
       - $PWD/results:/home/admin/results
+      - $PWD/debug.log:/home/admin/debug.log
     env_file: .env
     entrypoint: ./boot.sh
     networks:
