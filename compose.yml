@@ -1,0 +1,18 @@
+version: '3'
+services:
+  schedule:
+    image: $DOCKER_USER/$SCHEDULE_IMAGE:$SCHEDULE_IMAGE_TAG
+    container_name: schedule
+    restart: always
+    volumes:
+      - $PWD/results:/home/admin/results
+    env_file: .env
+    entrypoint: ./boot.sh
+    networks:
+      - backend_net
+    depends_on:
+      - db
+
+networks:
+  backend_net:
+    external: true
