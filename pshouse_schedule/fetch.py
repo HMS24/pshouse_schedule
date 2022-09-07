@@ -8,6 +8,7 @@ from pyquery import PyQuery as pq
 
 import pshouse_schedule.utils as utils
 import pshouse_schedule.config as config
+from pshouse_schedule.exceptions import NotUpdatedException
 
 logger = logging.getLogger()
 
@@ -21,8 +22,7 @@ def fetch_deals():
 
     try:
         if is_resource_updated() == False:
-            logger.info("   resources haven't been updated yet")
-            return
+            raise NotUpdatedException("resources haven't been updated yet")
 
         resp = requests.get(
             url="https://plvr.land.moi.gov.tw//Download",
@@ -53,14 +53,14 @@ def is_resource_updated():
                                  .children().eq(6)
                                  .children().eq(1)
                                  .text().strip().split(" ")[1])
-    updated_list = [file[:8]
+    my_updated_list = [file[:8]
                     for file in os.listdir(config.STORAGE_ROOT_DIR)
                     if Path(file).suffix == ".csv"]
-    if not updated_list:
+    if not my_updated_list:
         return True
 
-    updated_list.sort(key=lambda date: datetime.strptime(date, "%Y%m%d"),
+    my_updated_list.sort(key=lambda date: datetime.strptime(date, "%Y%m%d"),
                       reverse=True)
-    my_last_updated_date = updated_list[0]
+    my_last_updated_date = my_updated_list[0]
 
     return offical_last_updated_date == my_last_updated_date
