@@ -16,3 +16,8 @@ class Deal:
             projections = (DealModel.id, DealModel.created_at)
 
             return session.query(*projections).order_by(DealModel.id.desc()).first()
+
+    def truncate(self):
+        with self._session() as session:
+            session.execute(f"truncate {DealModel.__tablename__};")
+            session.commit()

@@ -32,5 +32,7 @@ class Database:
         except Exception as e:
             logger.warn(f"Session rollback: {repr(e)}")
             session.rollback()
+
+            raise e
         finally:
             session.close()
