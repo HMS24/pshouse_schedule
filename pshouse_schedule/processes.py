@@ -30,19 +30,22 @@ def crawl_deals():
         return
 
     today = datetime.now().strftime("%Y%m%d")
+    filename = f"{today}_F_lvr_land_B.csv"
+
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=OUTPUT_PATH.joinpath(f"{today}_F_lvr_land_B.csv"),
+        filepath=OUTPUT_PATH.joinpath(filename),
         content=content,
     )
 
     deals, deals_need_checked = parse_deals_info(content)
+    deals_need_checked = parse_incorrect_deals_info(deals_need_checked)
+
     load_into_database(deals)
 
-    deals_need_checked = parse_incorrect_deals_info(deals_need_checked)
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=OUTPUT_PATH.joinpath(f"{today}_F_lvr_land_B_need_check.json"),
+        filepath=OUTPUT_PATH.joinpath(f"{filename}.json"),
         content=json.dumps(
             obj=deals_need_checked,
             indent=4,
@@ -75,7 +78,6 @@ def create_history_deals():
             file for file in os.listdir(HISTORY_FOLDER_PATH)
             if fnmatch.fnmatch(file, "*.csv")
         ]
-        csv_files.sort()
 
         for filename in csv_files:
             filepath = HISTORY_FOLDER_PATH.joinpath(filename)
