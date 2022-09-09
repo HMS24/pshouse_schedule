@@ -17,8 +17,8 @@ from pshouse_schedule.db.stores import Deal
 
 logger = logging.getLogger()
 
-OUTPUT_PATH = Path(config.STORAGE_ROOT_DIR)
-OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
+RESOURCES_PATH = Path(config.STORAGE_ROOT_DIR)
+RESOURCES_PATH.mkdir(parents=True, exist_ok=True)
 
 
 def crawl_deals():
@@ -34,7 +34,7 @@ def crawl_deals():
 
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=OUTPUT_PATH.joinpath(filename),
+        filepath=RESOURCES_PATH.joinpath(filename),
         content=content,
     )
 
@@ -45,7 +45,7 @@ def crawl_deals():
 
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=OUTPUT_PATH.joinpath(f"{filename}.json"),
+        filepath=RESOURCES_PATH.joinpath(f"{filename}.json"),
         content=json.dumps(
             obj=deals_need_checked,
             indent=4,
@@ -71,16 +71,15 @@ def create_history_deals():
     except Exception as e:
         pass
     else:
-        HISTORY_FOLDER_PATH = Path("./history")
         HISTORY_CREATED_AT = datetime(2022, 1, 1)
 
         csv_files = [
-            file for file in os.listdir(HISTORY_FOLDER_PATH)
+            file for file in os.listdir(RESOURCES_PATH)
             if fnmatch.fnmatch(file, "*.csv")
         ]
 
         for filename in csv_files:
-            filepath = HISTORY_FOLDER_PATH.joinpath(filename)
+            filepath = RESOURCES_PATH.joinpath(filename)
             with open(filepath, "rb") as f:
                 content = f.read()
                 deals, deals_need_checked = parse_deals_info(content)
@@ -93,7 +92,7 @@ def create_history_deals():
 
             load_into_database(deals)
 
-            filepath = HISTORY_FOLDER_PATH.joinpath(f"{filename}.json")
+            filepath = RESOURCES_PATH.joinpath(f"{filename}.json")
             with open(filepath, "wb") as f:
                 content = json.dumps(
                     obj=deals_need_checked,
