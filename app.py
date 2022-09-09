@@ -1,3 +1,4 @@
+import sys
 import time
 import logging
 
@@ -33,5 +34,15 @@ def main():
         time.sleep(3600)
 
 
+def truncate_table_and_create_history_deals():
+    from pshouse_schedule.processes import create_history_deals
+    create_history_deals()
+
+
 if __name__ == "__main__":
-    main()
+    try:
+        arg = sys.argv[1]
+        if arg == "init":
+            truncate_table_and_create_history_deals()
+    except:
+        main()
