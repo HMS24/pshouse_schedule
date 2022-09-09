@@ -1,7 +1,5 @@
-import os
 import json
 import logging
-import fnmatch
 from datetime import datetime, date
 from pathlib import Path
 

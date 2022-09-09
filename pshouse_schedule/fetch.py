@@ -49,18 +49,22 @@ def is_resource_updated():
     history_page = requests.get(HISTORY_LIST_URL)
     doc = pq(history_page.text)
 
-    offical_last_updated_date = (doc("table").eq(0)
-                                 .children().eq(6)
-                                 .children().eq(1)
-                                 .text().strip().split(" ")[1])
-    my_updated_list = [file[:8]
-                    for file in os.listdir(config.STORAGE_ROOT_DIR)
-                    if Path(file).suffix == ".csv"]
+    offical_last_updated_date = (
+        doc("table").eq(0)
+        .children().eq(6)
+        .children().eq(1)
+        .text().strip().split(" ")[1])
+
+    csv_files = Path(config.STORAGE_ROOT_DIR).glob("*.csv")
+    my_updated_list = [file.name[:8]for file in csv_files]
+
     if not my_updated_list:
         return True
 
-    my_updated_list.sort(key=lambda date: datetime.strptime(date, "%Y%m%d"),
-                      reverse=True)
+    my_updated_list.sort(
+        key=lambda date: datetime.strptime(date, "%Y%m%d"),
+        reverse=True,
+    )
     my_last_updated_date = my_updated_list[0]
 
     return offical_last_updated_date == my_last_updated_date
