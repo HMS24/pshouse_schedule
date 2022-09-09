@@ -16,25 +16,20 @@ logger = logging.getLogger()
 def fetch_deals():
     logger.info("   step: fetch_deals")
 
-    params = {
-        "fileName": "f_lvr_land_b.csv",
-    }
-
     try:
         if is_resource_updated() == False:
             raise NotUpdatedException("resources haven't been updated yet")
 
         resp = requests.get(
             url="https://plvr.land.moi.gov.tw//Download",
-            params=params,
+            params=dict(fileName="f_lvr_land_b.csv"),
             headers=utils.HEADERS,
         )
 
         # 當找不到該季或不正確的 fileName 時，會回傳 "系統發生錯誤，請洽系統管理人員" 的 html
         # 假設內政部的錯誤網頁不太會變動，判斷 Content-Length 較快，
         if int(resp.headers["Content-Length"]) == 541:
-            raise Exception(
-                f"https://plvr.land.moi.gov.tw server error")
+            raise Exception("https://plvr.land.moi.gov.tw server error")
 
         return resp.content
     except Exception as e:
@@ -53,10 +48,11 @@ def is_resource_updated():
         doc("table").eq(0)
         .children().eq(6)
         .children().eq(1)
-        .text().strip().split(" ")[1])
+        .text().strip().split(" ")[1]
+    )
 
     csv_files = Path(config.STORAGE_ROOT_DIR).glob("*.csv")
-    my_updated_list = [file.name[:8]for file in csv_files]
+    my_updated_list = [file.name[:8] for file in csv_files]
 
     if not my_updated_list:
         return True
