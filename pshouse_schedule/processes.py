@@ -17,8 +17,10 @@ from pshouse_schedule.db.stores import Deal
 
 logger = logging.getLogger()
 
-RESOURCES_PATH = Path(config.STORAGE_ROOT_DIR)
-RESOURCES_PATH.mkdir(parents=True, exist_ok=True)
+RESOURCES_FOLDER = Path(config.STORAGE_ROOT_DIR)
+RESOURCES_FOLDER.mkdir(parents=True, exist_ok=True)
+CHECKED_FOLDER = RESOURCES_FOLDER.joinpath("checked")
+CHECKED_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
 def crawl_deals():
@@ -30,11 +32,11 @@ def crawl_deals():
         return
 
     today = datetime.now().strftime("%Y%m%d")
-    filename = f"{today}_F_lvr_land_B.csv"
+    filepath = RESOURCES_FOLDER.joinpath(f"{today}_F_lvr_land_B.csv")
 
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=RESOURCES_PATH.joinpath(filename),
+        filepath=filepath,
         content=content,
     )
 
@@ -43,9 +45,10 @@ def crawl_deals():
 
     load_into_database(deals)
 
+    json_file = filepath.with_suffix(".json").name
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=RESOURCES_PATH.joinpath(f"{filename}.json"),
+        filepath=CHECKED_FOLDER.joinpath(json_file),
         content=json.dumps(
             obj=deals_need_checked,
             indent=4,
@@ -73,18 +76,14 @@ def create_history_deals():
     else:
         HISTORY_CREATED_AT = datetime(2022, 1, 1)
 
-        csv_files = [
-            file for file in os.listdir(RESOURCES_PATH)
-            if fnmatch.fnmatch(file, "*.csv")
-        ]
+        csv_files = [file for file in RESOURCES_FOLDER.glob("*.csv")]
 
-        for filename in csv_files:
-            filepath = RESOURCES_PATH.joinpath(filename)
+        for filepath in csv_files:
             with open(filepath, "rb") as f:
                 content = f.read()
                 deals, deals_need_checked = parse_deals_info(content)
                 deals_need_checked = parse_incorrect_deals_info(
-                    deals_need_checked
+                    deals_need_checked,
                 )
 
             for deal in deals:
@@ -92,7 +91,9 @@ def create_history_deals():
 
             load_into_database(deals)
 
-            filepath = RESOURCES_PATH.joinpath(f"{filename}.json")
+            json_file = filepath.with_suffix(".json").name
+            filepath = CHECKED_FOLDER.joinpath(json_file)
+
             with open(filepath, "wb") as f:
                 content = json.dumps(
                     obj=deals_need_checked,
