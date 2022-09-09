@@ -5,7 +5,10 @@ from pshouse_schedule.processes import (
     crawl_deals,
     check_deals_crawled,
 )
-from pshouse_schedule.exceptions import NotUpdatedException
+from pshouse_schedule.exceptions import (
+    NotUpdatedException,
+    NotLoadedException,
+)
 
 CRAWL_DEALS_SCHEDULE = "crawl_deals_schedule"
 CHECK_AFTER_DEALS_CRAWLED = "check_after_deals_crawled"
@@ -43,7 +46,7 @@ def event_job_executed_handler(event):
 
 def event_job_error_handler(event):
     if event.job_id == CHECK_AFTER_DEALS_CRAWLED:
-        if isinstance(event.exception, NotUpdatedException):
+        if isinstance(event.exception, (NotUpdatedException, NotLoadedException)):
             scheduler.add_job(
                 **JOBS[CRAWL_DEALS_ONCE],
                 next_run_time=datetime.now() + timedelta(hours=1),
