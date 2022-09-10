@@ -18,7 +18,7 @@ def test_fetch_deals():
             mock.patch("requests.get", mock_request_deals):
 
         results = fetch_deals()
-        assert len(results) == 2846
+        assert len(results) == 1579
         assert results[:10] == "\ufeff鄉鎮市區,交易標的"
 
     # case: failed to fetch
