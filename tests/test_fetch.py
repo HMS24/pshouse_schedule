@@ -3,7 +3,7 @@ from unittest import mock
 
 from pshouse_schedule.fetch import (
     fetch_deals,
-    is_resource_updated,
+    have_resources_been_updated,
 )
 from tests.mock import (
     mock_request_deals,
@@ -14,7 +14,7 @@ from tests.mock import (
 
 def test_fetch_deals():
     # case: success
-    with mock.patch("pshouse_schedule.fetch.is_resource_updated", return_value=True), \
+    with mock.patch("pshouse_schedule.fetch.have_resources_been_updated", return_value=True), \
             mock.patch("requests.get", mock_request_deals):
 
         results = fetch_deals()
@@ -22,20 +22,20 @@ def test_fetch_deals():
         assert results[:10] == "\ufeff鄉鎮市區,交易標的"
 
     # case: failed to fetch
-    with mock.patch("pshouse_schedule.fetch.is_resource_updated", return_value=True), \
+    with mock.patch("pshouse_schedule.fetch.have_resources_been_updated", return_value=True), \
             mock.patch("requests.get", mock_request_deals_failed):
 
         results = fetch_deals()
         assert results == None
 
     # case: failed to fetch - resources havn't been updated
-    with mock.patch("pshouse_schedule.fetch.is_resource_updated", return_value=False):
+    with mock.patch("pshouse_schedule.fetch.have_resources_been_updated", return_value=False):
 
         results = fetch_deals()
         assert results == None
 
 
-def test_is_resource_updated():
+def test_have_resources_been_updated():
     output_dir = "./tests/data/results"
 
     # case success
@@ -45,4 +45,4 @@ def test_is_resource_updated():
         for file in os.listdir(output_dir):
             os.remove(f"{output_dir}/{file}")
 
-        assert is_resource_updated() == True
+        assert have_resources_been_updated() == True

@@ -17,7 +17,7 @@ def fetch_deals():
     logger.info("   step: fetch_deals")
 
     try:
-        if is_resource_updated() == False:
+        if have_resources_been_updated() == False:
             raise NotUpdatedException("resources haven't been updated yet")
 
         resp = requests.get(
@@ -36,7 +36,7 @@ def fetch_deals():
         return None
 
 
-def is_resource_updated():
+def have_resources_been_updated():
     HISTORY_LIST_URL = "http://plvr.land.moi.gov.tw/DownloadHistory_ajax_list"
 
     history_page = requests.get(HISTORY_LIST_URL)
