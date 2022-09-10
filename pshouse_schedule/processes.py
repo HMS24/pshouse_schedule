@@ -26,7 +26,7 @@ def crawl_deals():
 
     content = fetch_deals()
 
-    if content is None:
+    if not content:
         return
 
     today = datetime.now().strftime("%Y%m%d")
@@ -39,10 +39,12 @@ def crawl_deals():
     )
 
     deals, deals_need_checked = parse_deals_info(content)
-    deals_need_checked = parse_incorrect_deals_info(deals_need_checked)
-
     load_into_database(deals)
 
+    if not deals_need_checked:
+        return
+
+    deals_need_checked = parse_incorrect_deals_info(deals_need_checked)
     json_file = filepath.with_suffix(".json").name
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
