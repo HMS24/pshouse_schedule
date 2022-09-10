@@ -30,7 +30,6 @@ def test_fetch_deals():
 
     # case: failed to fetch - resources havn't been updated
     with mock.patch("pshouse_schedule.fetch.have_resources_been_updated", return_value=False):
-
         results = fetch_deals()
         assert results == None
 
@@ -38,11 +37,44 @@ def test_fetch_deals():
 def test_have_resources_been_updated():
     output_dir = "./tests/data/results"
 
-    # case success
+    # case: empty results, True
     with mock.patch("requests.get", mock_request_history_deals_list), \
             mock.patch("pshouse_schedule.config.STORAGE_ROOT_DIR", output_dir):
 
-        for file in os.listdir(output_dir):
-            os.remove(f"{output_dir}/{file}")
+        _remove_files_from_dir(output_dir)
+        assert have_resources_been_updated() == True
+
+    # case: have been updated, True
+    with mock.patch("requests.get", mock_request_history_deals_list), \
+            mock.patch("pshouse_schedule.config.STORAGE_ROOT_DIR", output_dir):
+
+        _remove_files_from_dir(output_dir)
+        _add_file_to_dir(output_dir, "20220721_F_lvr_land_B.csv")
+        _add_file_to_dir(output_dir, "20220801_F_lvr_land_B.csv")
+        _add_file_to_dir(output_dir, "20220811_F_lvr_land_B.csv")
+        _add_file_to_dir(output_dir, "20220821_F_lvr_land_B.csv")
 
         assert have_resources_been_updated() == True
+
+        _remove_files_from_dir(output_dir)
+
+    # case: havn't been updated, False
+    with mock.patch("requests.get", mock_request_history_deals_list), \
+            mock.patch("pshouse_schedule.config.STORAGE_ROOT_DIR", output_dir):
+
+        _remove_files_from_dir(output_dir)
+        _add_file_to_dir(output_dir, "20220821_F_lvr_land_B.csv")
+        _add_file_to_dir(output_dir, "20220901_F_lvr_land_B.csv")
+
+        assert have_resources_been_updated() == False
+
+        _remove_files_from_dir(output_dir)
+
+
+def _remove_files_from_dir(dir_path):
+    for filename in os.listdir(dir_path):
+        os.remove(f"{dir_path}/{filename}")
+
+
+def _add_file_to_dir(dir_path, filename):
+    open(f"{dir_path}/{filename}", "w").close()
