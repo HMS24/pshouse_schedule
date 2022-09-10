@@ -20,11 +20,16 @@ def fetch_deals():
         if is_resource_updated() == False:
             raise NotUpdatedException("resources haven't been updated yet")
 
-        return requests.get(
+        resp = requests.get(
             url="https://plvr.land.moi.gov.tw//Download",
             params=dict(fileName="f_lvr_land_b.csv"),
             headers=utils.HEADERS,
-        ).text
+        )
+
+        if resp.status_code == 404:
+            raise Exception("file not found")
+
+        return resp.text
     except Exception as e:
         logger.warning(f"   fetch error: {repr(e)}")
 
