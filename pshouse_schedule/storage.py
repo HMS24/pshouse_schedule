@@ -27,7 +27,7 @@ def save_to_storage(dirname, filepath, content):
     logger.info("   step: save_to_storage")
 
     try:
-        with open(filepath, "wb") as f:
+        with open(filepath, "w", encoding="utf-8-sig") as f:
             f.write(content)
 
         s = Storage(dirname)

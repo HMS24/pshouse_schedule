@@ -23,7 +23,7 @@ def parse_deals_info(raw):
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
     df = pd.read_csv(
-        io.BytesIO(raw),
+        io.StringIO(raw),
         encoding="utf-8-sig",
         quoting=csv.QUOTE_NONE,
     )

@@ -51,7 +51,7 @@ def crawl_deals():
             obj=deals_need_checked,
             indent=4,
             ensure_ascii=False,
-        ).encode("utf-8"),
+        ),
     )
 
 

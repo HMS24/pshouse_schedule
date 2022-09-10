@@ -24,7 +24,7 @@ def fetch_deals():
             url="https://plvr.land.moi.gov.tw//Download",
             params=dict(fileName="f_lvr_land_b.csv"),
             headers=utils.HEADERS,
-        ).content
+        ).text
     except Exception as e:
         logger.warning(f"   fetch error: {repr(e)}")
 
