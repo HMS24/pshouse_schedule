@@ -17,8 +17,8 @@ logger = logging.getLogger()
 
 RESOURCES_FOLDER = Path(config.STORAGE_ROOT_DIR)
 RESOURCES_FOLDER.mkdir(parents=True, exist_ok=True)
-CHECKED_FOLDER = RESOURCES_FOLDER.joinpath("checked")
-CHECKED_FOLDER.mkdir(parents=True, exist_ok=True)
+CHECK_FOLDER = RESOURCES_FOLDER.joinpath("check")
+CHECK_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
 def crawl_deals():
@@ -48,7 +48,7 @@ def crawl_deals():
     json_file = filepath.with_suffix(".json").name
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
-        filepath=CHECKED_FOLDER.joinpath(json_file),
+        filepath=CHECK_FOLDER.joinpath(json_file),
         content=json.dumps(
             obj=deals_need_checked,
             indent=4,
@@ -92,7 +92,7 @@ def create_history_deals():
             load_into_database(deals)
 
             json_file = filepath.with_suffix(".json").name
-            filepath = CHECKED_FOLDER.joinpath(json_file)
+            filepath = CHECK_FOLDER.joinpath(json_file)
 
             with open(filepath, "wb") as f:
                 content = json.dumps(
