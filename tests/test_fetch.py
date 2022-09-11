@@ -1,5 +1,7 @@
 import os
+import shutil
 from unittest import mock
+from pathlib import Path
 
 from pshouse_schedule.fetch import (
     fetch_deals,
@@ -36,6 +38,7 @@ def test_fetch_deals():
 
 def test_have_resources_been_updated():
     output_dir = "./tests/data/results"
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     # case: empty results, True
     with mock.patch("requests.get", mock_request_history_deals_list), \
@@ -69,6 +72,8 @@ def test_have_resources_been_updated():
         assert have_resources_been_updated() == False
 
         _remove_files_from_dir(output_dir)
+
+    shutil.rmtree(output_dir)
 
 
 def _remove_files_from_dir(dir_path):
