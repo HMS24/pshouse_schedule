@@ -23,7 +23,7 @@ CHECK_FOLDER.mkdir(parents=True, exist_ok=True)
 
 
 def crawl_deals():
-    logger.info("start crawl_deals")
+    logger.info("PROCESS: crawl_deals")
 
     content = fetch_deals()
 
@@ -57,7 +57,7 @@ def crawl_deals():
 
 
 def check_deals_crawled():
-    logger.info("start check_deals_crawled")
+    logger.info("PROCESS: check_deals_crawled")
 
     deal = Deal(db.session).last()
 

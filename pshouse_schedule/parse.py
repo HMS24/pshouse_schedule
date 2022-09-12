@@ -18,7 +18,7 @@ logger = logging.getLogger()
 
 
 def parse_deals_info(raw):
-    logger.info("   step: parse_deals_info")
+    logger.info("PROCESS: crawl_deals, STEP: parse_deals_info")
 
     # encoding "utf-8-sig" for escaping UTF16_BOM
     # quoting "csv.QUOTE_NONE" 欄位會有誤輸入 quote 的時候
@@ -64,7 +64,8 @@ def parse_deals_info(raw):
         try:
             results.append(Deal(**record).dict())
         except ValidationError as e:
-            logger.warning("    parse deal info failed")
+            logger.warning(
+                f"PROCESS: crawl_deals, STEP: parse_deals_info, EXCEPTION: parse error, {repr(e)}")
 
             record["error_message"] = repr(e)
             need_checked.append(record)
@@ -73,7 +74,7 @@ def parse_deals_info(raw):
 
 
 def parse_incorrect_deals_info(records):
-    logger.info("   step: parse_incorrect_deals_info")
+    logger.info("PROCESS: crawl_deals, STEP: parse_incorrect_deals_info")
 
     if not records:
         return

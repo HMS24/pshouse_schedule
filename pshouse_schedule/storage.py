@@ -24,7 +24,7 @@ class Storage:
 
 
 def save_to_storage(dirname, filepath, content):
-    logger.info("   step: save_to_storage")
+    logger.info("PROCESS: crawl_deals, STEP: save_to_storage")
 
     try:
         with open(filepath, "w", encoding="utf-8-sig") as f:
@@ -33,4 +33,5 @@ def save_to_storage(dirname, filepath, content):
         s = Storage(dirname)
         s.upload(filepath)
     except Exception as e:
-        logger.warning(f"   storage error: {repr(e)}")
+        logger.warning(
+            f"PROCESS: crawl_deals, STEP: fetch_deals, EXCEPTION: storage error, {repr(e)}")

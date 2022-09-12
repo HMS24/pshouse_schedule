@@ -7,11 +7,12 @@ logger = logging.getLogger()
 
 
 def load_into_database(rows):
-    logger.info("   step: load_into_database")
+    logger.info("PROCESS: crawl_deals, STEP: load_into_database")
 
     deal = Deal(db.session)
 
     try:
         deal.bulk_insert(rows)
     except Exception as e:
-        logger.warning(f"   load error: {repr(e)}")
+        logger.warning(
+            f"PROCESS: crawl_deals, STEP: load_into_database, EXCEPTION: load error, {repr(e)}")
