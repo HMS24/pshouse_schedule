@@ -6,6 +6,9 @@ set -o pipefail
 USER=$1
 HOST=$2
 
+# replace ??????
+export DOCKER_USER=?????? && export SCHEDULE_IMAGE=?????? && export SCHEDULE_IMAGE_TAG=??????
+
 # build
 echo "**********************************"
 echo "** Building image ****************"
@@ -17,6 +20,8 @@ build/build.sh
 echo "**********************************"
 echo "** Testing ***********************"
 echo "**********************************"
+
+build/test.sh
 
 # push
 echo "**********************************"
