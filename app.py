@@ -44,5 +44,5 @@ if __name__ == "__main__":
         arg = sys.argv[1]
         if arg == "init":
             truncate_table_and_create_history_deals()
-    except:
+    except IndexError:
         main()
