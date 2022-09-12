@@ -87,7 +87,7 @@ def create_history_deals():
         csv_files = [file for file in RESOURCES_FOLDER.glob("*.csv")]
 
         for filepath in csv_files:
-            with open(filepath, "rb") as f:
+            with open(filepath, "r") as f:
                 content = f.read()
                 deals, deals_need_checked = parse_deals_info(content)
                 deals_need_checked = parse_incorrect_deals_info(
