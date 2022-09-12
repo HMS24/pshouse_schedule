@@ -1,7 +1,10 @@
 import json
 import logging
-from datetime import datetime, date
 from pathlib import Path
+from datetime import (
+    datetime,
+    date,
+)
 
 import pshouse_schedule.config as config
 
@@ -11,8 +14,11 @@ from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
 from pshouse_schedule.storage import save_to_storage
 from pshouse_schedule.utils import generate_saved_filename
-from pshouse_schedule.exceptions import NotLoadedException
 from pshouse_schedule.db.stores import Deal
+from pshouse_schedule.exceptions import (
+    NotLoadedException,
+    NotUpdatedException,
+)
 
 logger = logging.getLogger()
 
@@ -59,8 +65,11 @@ def crawl_deals():
 def check_deals_crawled():
     logger.info("PROCESS: check_deals_crawled")
 
-    deal = Deal(db.session).last()
+    filepath = RESOURCES_FOLDER.joinpath(generate_saved_filename())
+    if not filepath.exists():
+        raise NotUpdatedException("Resources haven't been updated yet")
 
+    deal = Deal(db.session).last()
     if deal.created_at.date() != date.today():
         raise NotLoadedException("Deals haven't been loaded yet")
 

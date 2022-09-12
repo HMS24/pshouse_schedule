@@ -17,8 +17,8 @@ def fetch_deals():
     logger.info("PROCESS: crawl_deals, STEP: fetch_deals")
 
     try:
-        if have_resources_been_updated() == False:
-            raise NotUpdatedException("Resources haven't been updated yet")
+        if not have_resources_been_updated():
+            return
 
         resp = requests.get(
             url="https://plvr.land.moi.gov.tw//Download",
@@ -34,7 +34,7 @@ def fetch_deals():
         logger.warning(
             f"PROCESS: crawl_deals, STEP: fetch_deals, EXCEPTION: fetch error, {repr(e)}")
 
-        return None
+        return
 
 
 def have_resources_been_updated():
