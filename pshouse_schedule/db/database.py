@@ -30,7 +30,7 @@ class Database:
         try:
             yield session
         except Exception as e:
-            logger.warn(f"EXCEPTION: Session rollback, {repr(e)}"))
+            logger.warn(f"EXCEPTION: Session rollback, {repr(e)}")
             session.rollback()
 
             raise e
