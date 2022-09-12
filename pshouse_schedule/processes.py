@@ -10,6 +10,7 @@ from pshouse_schedule.fetch import fetch_deals
 from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
 from pshouse_schedule.storage import save_to_storage
+from pshouse_schedule.utils import generate_saved_filename
 from pshouse_schedule.exceptions import NotLoadedException
 from pshouse_schedule.db.stores import Deal
 
@@ -29,9 +30,7 @@ def crawl_deals():
     if not content:
         return
 
-    today = datetime.now().strftime("%Y%m%d")
-    filepath = RESOURCES_FOLDER.joinpath(f"{today}_F_lvr_land_B.csv")
-
+    filepath = RESOURCES_FOLDER.joinpath(generate_saved_filename())
     save_to_storage(
         dirname=config.STORAGE_BUCKET_NAME,
         filepath=filepath,

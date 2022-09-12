@@ -53,3 +53,20 @@ def roc_to_ad_date(date_str):
     date_str = str(int(roc_year) + 1911) + date_str[3:]
 
     return datetime.strptime(date_str, "%Y%m%d")
+
+
+def generate_saved_filename():
+    today = datetime.now()
+    day = _calculate_publish_day(today.day)
+
+    date_str = today.strftime("%Y%m%d")
+    publish_date_str = date_str[:6] + str(day)
+
+    return f"{publish_date_str}_F_lvr_land_B.csv"
+
+
+def _calculate_publish_day(day):
+    # edge case
+    if day == 21:
+        return 21
+    return (day // 11) * 10 + 1

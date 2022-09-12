@@ -23,9 +23,13 @@ from pshouse_schedule.processes import crawl_deals
 @mock.patch("pshouse_schedule.storage.config", MockConfig)
 @mock.patch("pshouse_schedule.processes.fetch_deals", mock_fetch_deals)
 @mock.patch("pshouse_schedule.processes.parse_deals_info", mock_parse_deals_info)
-@mock.patch("pshouse_schedule.processes.load_into_database")
 @mock.patch("pshouse_schedule.processes.parse_incorrect_deals_info", mock_parse_incorrect_deals_info)
-def test_crawl_deals(load_into_database_mocker):
+@mock.patch("pshouse_schedule.processes.load_into_database")
+@mock.patch("pshouse_schedule.processes.generate_saved_filename", return_value="20220901_F_lvr_land_B.csv")
+def test_crawl_deals(
+        load_into_database_mocker,
+        generate_saved_filename_mocker,
+):
     # case: success
     _set_up()
 
@@ -34,7 +38,7 @@ def test_crawl_deals(load_into_database_mocker):
     today = datetime.now().strftime("%Y%m%d")
     target_filename = MOCK_RESOURCES_FOLDER.joinpath(
         MockConfig.STORAGE_BUCKET_NAME,
-        f"{today}_F_lvr_land_B.csv",
+        "20220901_F_lvr_land_B.csv",
     )
     assert target_filename.exists()
 
@@ -44,7 +48,7 @@ def test_crawl_deals(load_into_database_mocker):
 
     check_filename = MOCK_RESOURCES_FOLDER.joinpath(
         "check",
-        f"{today}_F_lvr_land_B.json",
+        "20220901_F_lvr_land_B.json",
     )
     assert check_filename.exists()
 
