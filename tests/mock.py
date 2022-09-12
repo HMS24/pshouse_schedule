@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 EXPECTED_DEALS = [
     {
+        'city': '新北市',
         'district': '泰山區',
         'object_of_transaction': '',
         'location': '新北市泰山區坡雅路信華三街口',
@@ -27,6 +28,7 @@ EXPECTED_DEALS = [
         'buildings': 'A棟10-13F號',
     },
     {
+        'city': '新北市',
         'district': '土城區',
         'object_of_transaction': '房地(土地+建物)+車位',
         'location': '新北市土城區金城路二段',
@@ -52,6 +54,7 @@ EXPECTED_DEALS = [
 ]
 EXPECTED_NEED_CHECKED_DEALS = [
     {
+        'city': '新北市',
         'location': '新北市五股區成泰路三段',
         'transaction_date': Timestamp('2022-07-11 00:00:00'),
         'district': '五股區',
@@ -78,6 +81,7 @@ EXPECTED_NEED_CHECKED_DEALS = [
 ]
 EXPECTED_NEED_CHECKED_DEALS_PARSED = [
     {
+        '縣市': '新北市',
         '土地位置建物門牌': '新北市五股區成泰路三段',
         '交易年月日': '2022-07-11',
         '鄉鎮市區': '五股區',

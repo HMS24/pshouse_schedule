@@ -18,6 +18,7 @@ HEADERS = {
 }
 
 zh_en_map = {
+    "縣市": "city",
     "鄉鎮市區": "district",
     "交易標的": "object_of_transaction",
     "土地位置建物門牌": "location",

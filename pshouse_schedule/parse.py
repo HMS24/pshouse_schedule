@@ -32,6 +32,10 @@ def parse_deals_info(raw):
     df = df[columns]
     df.columns = translate_column_names(df.columns, zh_en_map)
 
+    # add column city from location partition
+    city = df.tail(1)["location"].values[0][:3]
+    df["city"] = city
+
     # remove english description row(usually second row)
     en_row_index = df[df["main_use"] == "main use"].index
     df = df.drop(en_row_index)

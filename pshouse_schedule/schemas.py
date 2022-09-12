@@ -4,8 +4,9 @@ from pydantic import BaseModel, validator
 
 
 class Deal(BaseModel):
-    
-    # 地區、交易標的、位置、交易日期
+
+    # 城市、地區、交易標的、位置、交易日期
+    city: str = ""
     district: str = ""
     object_of_transaction: str = ""
     location: str = ""
@@ -21,18 +22,18 @@ class Deal(BaseModel):
     room: str = ""
     restaurant_and_living_room: str = ""
     bathroom: str = ""
-    
+
     # 土地面積、建物面積、車位面積  (平方公尺)
     land_total_area: float = 0.00
     building_total_area: float = 0.00
     parking_sapce_total_area: float = 0.00
-    
+
     # 總價、單價、車位類型、車位價格 (元)
     price: int = 0
     unit_price: int = 0
     parking_sapce_type: str = ""
     parking_sapce_price: int = 0
-    
+
     # 備註、預售案名、預售棟名
     note: str = ""
     build_name: str = ""

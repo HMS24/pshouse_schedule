@@ -13,8 +13,8 @@ class Deal(Base):
         primary_key=True,
     )
 
-    # 城市、地區、交易標的、位置、交易日期
-    city = sa.Column(sa.String(3), nullable=False, default="新北市", index=True)
+    # 縣市、地區、交易標的、位置、交易日期
+    city = sa.Column(sa.String(3), nullable=False, index=True)
     district = sa.Column(sa.String(8), nullable=False, index=True)
     object_of_transaction = sa.Column(sa.String(16), nullable=False)
     location = sa.Column(sa.String(128), nullable=False)
