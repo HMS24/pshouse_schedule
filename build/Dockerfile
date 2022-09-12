@@ -15,7 +15,7 @@ RUN venv/bin/pip3 install -r requirements.txt
 # minimum image size, copy and chown
 COPY --chown=admin:admin pshouse_schedule pshouse_schedule
 COPY --chown=admin:admin tests tests
-COPY --chown=admin:admin app.py boot.sh requirements.test.txt ./
+COPY --chown=admin:admin app.py boot.sh requirements.test.txt pytest.ini ./
 
 RUN chmod +x boot.sh
 
