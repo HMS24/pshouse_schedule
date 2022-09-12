@@ -43,10 +43,13 @@ def have_resources_been_updated():
     doc = pq(history_page.text)
 
     offical_last_updated_date = (
-        doc("table").eq(0)
-        .children().eq(6)
-        .children().eq(1)
-        .text().strip().split(" ")[1]
+        doc("table")
+        .eq(0)
+        .children("tr:last-child")
+        .children("td:nth-child(2)")
+        .text()
+        .strip()
+        .split(" ")[1]
     )
 
     csv_files = Path(config.STORAGE_ROOT_DIR).glob("*.csv")
