@@ -3,7 +3,7 @@
 set -xe
 set -o pipefail
 
-REMOTE_MACHINE=$1@$2
+REMOTE_MACHINE=$1
 SSH_PEM="~/chimei_24.pem"
 
 echo "$SCHEDULE_IMAGE" > /tmp/.auth

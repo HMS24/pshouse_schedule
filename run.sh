@@ -3,11 +3,15 @@
 set -e
 set -o pipefail
 
-USER=$1
-HOST=$2
+DEPLOY_PLACE=$1
 
 # replace ??????
 export DOCKER_USER=?????? && export SCHEDULE_IMAGE=?????? && export SCHEDULE_IMAGE_TAG=??????
+
+if [ -z "$DEPLOY_PLACE" ]; then
+	echo "DEPLOY_PLACE argument is required!"
+	exit 1
+fi
 
 # build
 echo "**********************************"
@@ -35,13 +39,12 @@ echo "**********************************"
 echo "** Deploying *********************"
 echo "**********************************"
 
-if [ "$USER" = "localhost" ]; 
+echo "Deploy to $DEPLOY_PLACE"
+if [ "$USER" = "$DEPLOY_PLACE" ]; 
     then
-        echo "Deploy to localhost"
         docker compose up -d
     else
-        echo "Deploy to $USER@$HOST"
-        deploy/deploy.sh $USER $HOST
+        deploy/deploy.sh $DEPLOY_PLACE
 fi
 
 exit 0
