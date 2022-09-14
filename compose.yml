@@ -1,7 +1,7 @@
 version: '3'
 services:
   schedule:
-    image: $DOCKER_USER/$SCHEDULE_IMAGE:$SCHEDULE_IMAGE_TAG
+    image: $DOCKER_USER/$IMAGE:$TAG
     container_name: schedule
     restart: always
     volumes:

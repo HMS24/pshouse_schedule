@@ -4,10 +4,9 @@ set -xe
 set -o pipefail
 
 REMOTE_MACHINE=$1
-SSH_PEM="~/chimei_24.pem"
 
-echo "$SCHEDULE_IMAGE" > /tmp/.auth
-echo "$SCHEDULE_IMAGE_TAG" >> /tmp/.auth
+echo "$IMAGE" > /tmp/.auth
+echo "$TAG" >> /tmp/.auth
 echo "$DOCKER_USER" >> /tmp/.auth
 cat ~/docker_pass >> /tmp/.auth
 
