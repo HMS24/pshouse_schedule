@@ -1,18 +1,49 @@
-#!/bin/bash
+#!/bin/bash -e
 
-set -e
 set -o pipefail
 
-DEPLOY_PLACE=$1
+# declare
+TARGET=""
+SSH_PEM=""
+DOCKER_USER="local"
+DOCKER_PASS=""
+IMAGE="pshs"
+TAG="latest"
 
-# replace ********
-export DOCKER_USER=chimei24
-export IMAGE=pshs
-export TAG=0.0.1
-export SSH_PEM="~/chimei_24.pem"
+# init database default false
+INIT=0
 
-if [ -z "$DEPLOY_PLACE" ]; then
-	echo "DEPLOY_PLACE argument is required!"
+while [[ "$#" -gt 0 ]]; do
+	case $1 in
+		--target) TARGET="$2"; shift ;;
+		--ssh-pem) SSH_PEM="$2"; shift ;;
+		--docker-user) DOCKER_USER="$2"; shift ;;
+		--docker-pass) DOCKER_PASS="$2"; shift ;;
+		--image) IMAGE="$2"; shift ;;
+		--tag) TAG="$2"; shift ;;
+		--init) INIT="$2"; shift ;;
+		*) echo "Unknown parameter passed: $1"; exit 1 ;;
+	esac
+	shift
+done
+
+if [ -z "$TARGET" ]; then
+	echo "--target argument is required!"
+	exit 1
+fi
+
+if [ "$TARGET" != "local" ] && [ -z "$SSH_PEM" ]; then
+	echo "--ssh-pem argument is required!"
+	exit 1
+fi
+
+if [ "$TARGET" != "local" ] && [ "$DOCKER_USER" == "local" ]; then
+	echo "--docker-user argument is required!"
+	exit 1
+fi
+
+if [ "$TARGET" != "local" ] && [ -z "$DOCKER_PASS" ]; then
+	echo "--docker-pass argument is required!"
 	exit 1
 fi
 
@@ -21,54 +52,55 @@ echo "**********************************"
 echo "** Building image ****************"
 echo "**********************************"
 
-build/build.sh
+build/build.sh $IMAGE $TAG
 
 # test
 echo "**********************************"
 echo "** Testing ***********************"
 echo "**********************************"
 
-build/test.sh
+# build/test.sh $IMAGE $TAG
 
 # push
 echo "**********************************"
 echo "** Pushing image *****************"
 echo "**********************************"
 
-build/push.sh
+build/push.sh $TARGET $IMAGE $TAG $DOCKER_USER $DOCKER_PASS
 
 # deploy
 echo "**********************************"
 echo "** Deploying *********************"
 echo "**********************************"
 
-echo "Deploy to $DEPLOY_PLACE"
-if [ "$DEPLOY_PLACE" = "local" ]; 
+echo "Deploy to $TARGET"
+
+if [ "$TARGET" = "local" ]; 
     then
+        DOCKER_USER=$DOCKER_USER \
+        IMAGE=$IMAGE \
+        TAG=$TAG \
         docker compose up -d
     else
-        deploy/deploy.sh $DEPLOY_PLACE
+        deploy/deploy.sh $TARGET $SSH_PEM $IMAGE $TAG $DOCKER_USER $DOCKER_PASS
 fi
 
-# deliver history data
+# insert history data
 echo "**********************************"
-echo "** Deliver history data***********"
+echo "** Insert history data ***********"
 echo "**********************************"
 
-scp -i $SSH_PEM ./results/20210701_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20210701_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20211001_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20211001_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220101_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220101_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220401_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220401_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220601_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220601_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220701_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220701_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220711_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220711_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220721_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220721_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220801_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220801_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220811_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220811_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220821_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220821_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220901_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220901_F_lvr_land_B.csv
-scp -i $SSH_PEM ./results/20220911_F_lvr_land_B.csv $DEPLOY_PLACE:~/pshs/results/20220911_F_lvr_land_B.csv
+RESULTS_DIR="results"
 
-# truncate database and insert history data!!!!
-ssh -i $SSH_PEM $DEPLOY_PLACE "docker exec --workdir /home/admin schedule venv/bin/python3 app.py init"
+for file in "$PWD/$RESULTS_DIR"/*.csv
+	do
+        echo "scp -i $SSH_PEM "$file" $TARGET:~/pshs/"$RESULTS_DIR/$(basename -- $file)""
+	done
+
+if [ "$INIT" -eq 1 ]; then
+    echo "** Truncate table and insert history data!!!! ***********"
+
+    ssh -i $SSH_PEM $TARGET "docker exec --workdir /home/admin schedule venv/bin/python3 app.py init"
+fi
+
 exit 0
