@@ -81,4 +81,4 @@ ENV/
 *.db
 temp/
 debug.log
-results/
+results/check/*
