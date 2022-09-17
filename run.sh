@@ -75,14 +75,20 @@ echo "**********************************"
 
 echo "Deploy to $TARGET"
 
-if [ "$TARGET" = "local" ]; 
-    then
-        DOCKER_USER=$DOCKER_USER \
-        IMAGE=$IMAGE \
-        TAG=$TAG \
-        docker compose up -d
+if [ "$TARGET" = "local" ]; then
+	if docker network ls | grep -Fq "backend_net"; then
+        true
     else
-        deploy/deploy.sh $TARGET $SSH_PEM $IMAGE $TAG $DOCKER_USER $DOCKER_PASS
+        docker network create backend_net -d bridge
+	fi
+
+	DOCKER_USER=$DOCKER_USER \
+	IMAGE=$IMAGE \
+	TAG=$TAG \
+	docker compose up -d
+
+else
+    deploy/deploy.sh $TARGET $SSH_PEM $IMAGE $TAG $DOCKER_USER $DOCKER_PASS
 fi
 
 # insert history data
