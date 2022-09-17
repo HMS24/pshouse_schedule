@@ -102,7 +102,7 @@ Parameters
 │   ├── parse.py
 │   ├── load.py
 │   ├── storage.py
-│   ├── schemas.py             # validate 及 type conversion
+│   ├── schemas.py              # validate 及 type conversion
 │   ├── utils.py
 │   ├── config.py
 │   └── exceptions.py
@@ -226,4 +226,4 @@ Parameters
 - 定期 mysql dump，目前可以直接抹掉整張 table，但未來如果 web application 可以開放 api 從前端 update 不正確的資訊，就需要定期備份。
 
 ## 一些思考
-關於資料庫、排程及測試記錄在 [note.md]("https://github.com/HMS24/pshouse_schedule/blob/master/assets/note.md")
+關於資料庫、排程及測試記錄在 [note.md](https://github.com/HMS24/pshouse_schedule/blob/master/assets/note.md)
