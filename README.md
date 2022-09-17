@@ -115,6 +115,11 @@ Parameters
 └── run.sh                      # 執行 build and deploy 的 script
 ```
 
+### modules 邏輯順序：
+<p align="center">
+<img src="./assets/module_order.jpeg" alt="scheduler" width="1080"/>
+</p>
+
 ### modules 說明：
 
 - `boot.sh`: 未來如要保證 container 的啟動順序，需增加 wait for db 的 script，可以不用再 build image，以節省時間。
