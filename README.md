@@ -11,14 +11,14 @@ pre-sale house schedule
 
 **限制 1: 目前僅擷取新北市的當期預售資料。歷史資料已放 `results` 資料夾。區間包含 2021 第 2 季至 20220911(最新一期)。**
 
-**限制 2: 專案與 [pshouse](https://github.com/HMS24/pshouse) web application 合作，初期共用 database 並且也以 container 的方式運行。而為方便 2 邊的 `compose.yml` 溝通，在 deploy 階段會新增 docker network backend_net 如下**
+**限制 2: 專案與 [pshouse](https://github.com/HMS24/pshouse) web application 合作，初期共用 database 由 web application 負責 migrate database。並且也以 container 的方式運行。而為方便 2 邊的 `compose.yml` 溝通，在 deploy 階段會新增 docker network backend_net 如下**
 
 - [pshouse/compose.yml](https://github.com/HMS24/pshouse/blob/master/compose.yml#L46)
 - [pshouse schedule/compose.yml](https://github.com/HMS24/pshouse_schedule/blob/master/compose.yml#L18)
 
 之後將 database 服務獨立出來，例如使用 AWS rds，就可以刪除這段 code.🥲
-- [1]()
-- [2]()
+- [run.sh](https://github.com/HMS24/pshouse_schedule/blob/master/run.sh#L79)
+- [deploy/publish.sh](https://github.com/HMS24/pshouse_schedule/blob/master/deploy/publish.sh#L20)
     
 ## 如何使用
 ### 開發 (使用 pipenv)
@@ -226,4 +226,4 @@ Parameters
 - 定期 mysql dump，目前可以直接抹掉整張 table，但未來如果 web application 可以開放 api 從前端 update 不正確的資訊，就需要定期備份。
 
 ## 一些思考
-關於資料庫、排程及測試通通記錄在 [note.md]("./assets/note.md")
+關於資料庫、排程及測試記錄在 [note.md]("https://github.com/HMS24/pshouse_schedule/blob/master/assets/note.md")

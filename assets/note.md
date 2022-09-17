@@ -1,6 +1,6 @@
-## 雜記
+# 一些筆記及想法
 
-### 關於 Database
+## 關於 Database
 
 原本是與 pshouse project 一起開發，後來覺得 code 太雜拆分 2 個專案分別開發。 schedule 關注排程是否有被正確的執行，以及資料是否完整的存入資料庫。
 
@@ -14,7 +14,7 @@
 
 解決方式是把 database 服務拆出來，最簡單就是使用 AWS rds 的服務。
 
-### 關於 Schedule
+## 關於 Schedule
 
 schedule 方面
 
@@ -33,4 +33,10 @@ schedule 方面
 
 先選 `2` 的方式開發。
 
-### 關於測試
+## 關於 test
+- `test_fetch.py` mock 掉 requests 及檢查更新的 function，測試 fetch 邏輯。
+- `test_parse.py` 測試資料整理的邏輯。
+- `test_save.py` mock 掉 storage class 測試 save 功能，檔案是否存在。
+- `test_process.py` mock 掉 各種操作，主要驗證流程以及錯誤處理。
+
+另外關於 `load.py` 的測試，需要 mock 掉 database 以作隔離，不過尚未實作。
