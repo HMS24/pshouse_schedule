@@ -23,7 +23,7 @@
 ## 如何使用
 ### 開發
 
-    $ pip3 install -r requirements/common.txt
+    $ pip3 install -r requirements.txt
     $ python3 app.py
 
 ### 部署前置作業
