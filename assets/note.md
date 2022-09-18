@@ -2,10 +2,9 @@
 
 ## 關於 Database
 
-原本是與 pshouse project 一起開發，後來覺得 code 太雜拆分 2 個專案分別開發。 schedule 關注排程是否有被正確的執行，以及資料是否完整的存入資料庫。
+原本是與 [pshouse](https://github.com/HMS24/pshouse) project 一起開發，後來覺得 code 太雜拆分 2 個專案分別開發。 schedule 關注排程是否有被正確的執行，以及資料是否完整的存入資料庫。
 
-而 pshouse 是由 flask 框架開發的 web application，關注的是最終使用者的需求。呈現單頁實價登錄以客製化我自己的需求😃。
-另外還能快速搜尋關鍵字及排序。
+而 [pshouse](https://github.com/HMS24/pshouse) 是由 `Flask` 框架開發的 web application，關注的是最終使用者的需求。呈現單頁實價登錄以客製化我自己的需求😃。另外還能快速搜尋關鍵字及排序。
 
 因此，目前兩邊的 database 是共用的。並由 web 那邊做 migrate。缺點就是必須維護兩邊的 model 層。schedule 僅去擷取並插入資料而已。
 另外如果這邊也用一個 database 存資料，再由 web 那邊打 API 進來拿...會大幅增加開發成本。
@@ -40,3 +39,6 @@ schedule 方面
 - `test_process.py` mock 掉 各種操作，主要驗證流程以及錯誤處理。
 
 另外關於 `load.py` 的測試，需要 mock 掉 database 以作隔離，不過尚未實作。
+
+## 關於 pattern
+state machine...

@@ -1,11 +1,11 @@
 # pshouse schedule
-擷取預售案實價登錄排程 pre-sale house schedule
+擷取預售案實價登錄的排程 pre-sale house schedule
 
 ## 描述
 
-關於**預售屋實價登錄**的 EtLT 實作，於每月 1 號、11 號及 21 號從內政部網站下載預售屋實價登錄，並檢查資料是否已備份及更新 database。
+關於**預售屋實價登錄**的 EtL 實作，於每月 1 號、11 號及 21 號從內政部網站下載預售屋實價登錄，並檢查資料是否已備份及更新 database。
 
-首先擷取資料並上傳 AWS S3 備份。其次利用 `pandas` 做資料的前處理，並插入資料到 ＭySql 落地應用。最後儲存 validate 有問題的實價登錄，以期由人工校正。
+首先擷取資料並上傳 AWS S3 備份。其次利用 `pandas` 做資料的前處理，並插入資料到 ＭySql 落地應用。最後儲存 validate 有問題的實價登錄，由人工校正。
 
 排程則以 `APScheduler` 實作。另外當擷取的流程結束後，會確認資料是否有備份及載入 database，若無則間隔 1 小時再做一次擷取程序。部署方式以 container 部署到 AWS EC2 上執行。
 
@@ -21,10 +21,9 @@
 - [deploy/publish.sh](https://github.com/HMS24/pshouse_schedule/blob/master/deploy/publish.sh#L20)
     
 ## 如何使用
-### 開發 (使用 pipenv)
+### 開發
 
-    $ pipenv install
-    $ pipenv shell
+    $ pip3 install -r requirements/common.txt
     $ python3 app.py
 
 ### 部署前置作業
@@ -34,7 +33,7 @@
 2. 新增資料夾 `mkdir ~/pshs` ([`./deploy/publish.sh`](https://github.com/HMS24/pshouse_schedule/blob/master/deploy/publish.sh#L16) 有寫入資料夾的名稱 )
 3. 設置環境變數 `cd ~/pshs && vi .env`
     - `DATABASE_URI` 預設 sqlite
-    - `SQL_ECHO` [True|False] log sql statements?
+    - `SQL_ECHO` [True|False] log sql statements? 預設 false
     - `STORAGE_TYPE=S3` [S3|LOCAL] 上傳至哪裡？
     - `STORAGE_KEY` AWS 的 key
     - `STORAGE_SECRET` AWS 的 secret
