@@ -59,3 +59,73 @@ class Deal(Base):
             {self.build_name},
             {self.buildings}
         )>"""
+
+
+class DealStatistics(Base):
+
+    __tablename__ = "deal_statistics"
+    __table_args__ = (
+        sa.UniqueConstraint(
+            "city",
+            "district",
+            "year",
+            "month",
+            "build_name",
+            "room",
+            name="uc_city_district_year_month_buildname_room",
+        ),
+    )
+
+    id = sa.Column(
+        sa.Integer,
+        primary_key=True,
+    )
+    city = sa.Column(
+        sa.String(3),
+        nullable=False,
+    )
+    district = sa.Column(
+        sa.String(8),
+        nullable=False,
+    )
+    year = sa.Column(
+        sa.String(4),
+        nullable=False,
+    )
+    month = sa.Column(
+        sa.String(2),
+        nullable=False,
+    )
+    build_name = sa.Column(
+        sa.String(32),
+        nullable=False,
+    )
+    room = sa.Column(
+        sa.String(1),
+        nullable=False,
+    )
+    count_num = sa.Column(
+        sa.Integer,
+        nullable=False,
+    )
+    avg_total_price = sa.Column(
+        sa.Integer,
+        nullable=False,
+    )
+    avg_house_price = sa.Column(
+        sa.Integer,
+        nullable=False,
+    )
+    avg_house_unit_price = sa.Column(
+        sa.Integer,
+        nullable=False,
+    )
+    created_at = sa.Column(
+        sa.DateTime(timezone=True),
+        server_default=sa.func.now(),
+    )
+    updated_at = sa.Column(
+        sa.DateTime(timezone=True),
+        server_default=sa.func.now(),
+        onupdate=sa.func.now(),
+    )

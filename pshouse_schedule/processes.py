@@ -14,7 +14,10 @@ from pshouse_schedule.parse import parse_deals_info, parse_incorrect_deals_info
 from pshouse_schedule.load import load_into_database
 from pshouse_schedule.storage import save_to_storage
 from pshouse_schedule.utils import generate_saved_filename
-from pshouse_schedule.db.stores import Deal
+from pshouse_schedule.db.stores import (
+    Deal,
+    DealStatistics,
+)
 from pshouse_schedule.exceptions import (
     NotLoadedException,
     NotUpdatedException,
@@ -110,3 +113,12 @@ def create_history_deals():
                 ).encode("utf-8")
 
                 f.write(content)
+
+
+def transform_to_deal_statistics():
+    try:
+        DealStatistics(db.session).insert_or_update()
+    except Exception as e:
+        logger.warning(
+            f"PROCESS: transform_to_deal_statistics, EXCEPTION: transform error, {repr(e)}")
+        pass

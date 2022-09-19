@@ -39,10 +39,16 @@ def truncate_table_and_create_history_deals():
     create_history_deals()
 
 
+def transform_to_deal_statistics():
+    from pshouse_schedule.processes import transform_to_deal_statistics
+    transform_to_deal_statistics()
+
+
 if __name__ == "__main__":
     try:
         arg = sys.argv[1]
         if arg == "init":
             truncate_table_and_create_history_deals()
+            transform_to_deal_statistics()
     except IndexError:
         main()
