@@ -116,6 +116,8 @@ def create_history_deals():
 
 
 def transform_to_deal_statistics():
+    logger.info("PROCESS: transform_to_deal_statistics")
+
     try:
         DealStatistics(db.session).insert_or_update()
     except Exception as e:
