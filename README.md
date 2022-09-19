@@ -4,6 +4,7 @@
 ## 描述
 
 關於**預售屋實價登錄**的 EtL 實作，於每月 1 號、11 號及 21 號從內政部網站下載預售屋實價登錄，並檢查資料是否已備份及更新 database。
+除了新增歷史資料以外，也能更新淡水區 2022 年按月及按預售案分類的平均總價、平均房價及平均單價統計表資料。
 
 首先擷取資料並上傳 AWS S3 備份。其次利用 `pandas` 做資料的前處理，並插入資料到 ＭySql 落地應用。最後儲存 validate 有問題的實價登錄，由人工校正。
 
@@ -76,7 +77,9 @@ Parameters
 - `DOCKER_PASSWORD_PATH` docker 密碼檔案位置 ("$HOME/***")
 - `IMAGE`(optional): 映像檔名稱
 - `TAG`(optional) 映像檔 tag
-- `INIT_DATABASE`(optional) 重置 database [0|1] `1` 會 truncate table，再插入 `results`放的歷史資料。預設 0
+- `INIT_DATABASE`(optional) 
+重置 database [0|1] `1` 會 truncate table，再插入 `results`放的歷史資料。預設 0。
+也會**更新統計表資料(尚未自動更新)**
 
 ## 架構
 
@@ -211,7 +214,7 @@ Parameters
 
 ## 預計工作
 
-- 用 raw SQL statement 新增統計表。
+- [ ] 用 raw SQL statement 新增統計表。
     找出新北市淡水區一年內新開預售案，並統計各案 1、3 及 6 個月期間，其 10 坪以下、20 坪、30 坪及 40 坪以上各別的平均單價及總價。
     這一段想用 raw SQL statement 執行，直接 transform data。未來當其他縣市資料也加進來時因為資料很多，可以考慮直接從 S3 copy 進 Redshift(data warehouse)，那時候單純 sql 查詢的效率會比較高。而且若寫在 python 這邊處理，可能資料量太大，記憶體 load 不進來(自己猜測)
     
@@ -226,8 +229,8 @@ Parameters
         ```
     4. 新增 check deal_statistics process(是否有必要？)
 
-- 不正確的紀錄，經人工校正再 insert into database。
-- 定期 mysql dump，目前可以直接抹掉整張 table，但未來如果 web application 可以開放 api 從前端 update 不正確的資訊，就需要定期備份。
+- [ ] 不正確的紀錄，經人工校正再 insert into database。
+- [ ] 定期 mysql dump，目前可以直接抹掉整張 table，但未來如果 web application 可以開放 api 從前端 update 不正確的資訊，就需要定期備份。
 
 ## 一些思考
 關於資料庫、排程及測試記錄在 [note.md](https://github.com/HMS24/pshouse_schedule/blob/master/assets/note.md)
