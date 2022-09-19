@@ -17,9 +17,11 @@ cd ~/pshs \
 && mkdir -p results/check \
 && touch debug.log
 
-if docker network ls | grep -Fq "backend_net"; then
-    true
-else
+has_network=$(docker network ls -f "NAME=backend_net" -q)
+
+if [ -z "$has_network" ]; then
+	echo "Create backend_net network!"
+
     docker network create backend_net -d bridge
 fi
 
