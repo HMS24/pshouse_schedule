@@ -43,15 +43,21 @@ def have_resources_been_updated():
     history_page = requests.get(HISTORY_LIST_URL)
     doc = pq(history_page.text)
 
-    offical_last_updated_date = (
-        doc("table")
-        .eq(0)
-        .children("tr:last-child")
-        .children("td:nth-child(2)")
-        .text()
-        .strip()
-        .split(" ")[1]
-    )
+    try:
+        offical_last_updated_date = (
+            doc("table")
+            .eq(0)
+            .children("tr:last-child")
+            .children("td:nth-child(2)")
+            .text()
+            .strip()
+            .split(" ")[1]
+        )
+    except AttributeError as e:
+        # 新的一季，會把前期的列表清空
+        logger.warning(
+            f"PROCESS: crawl_deals, STEP: have_resources_been_updated, EXCEPTION: new season start, {repr(e)}")
+        return True
 
     csv_files = Path(config.STORAGE_ROOT_DIR).glob("*.csv")
     my_updated_list = [file.name[:8] for file in csv_files]
