@@ -100,7 +100,7 @@ RESULTS_DIR="results"
 
 for file in "$PWD/$RESULTS_DIR"/*.csv
 	do
-        echo "scp -i $SSH_PEM "$file" $TARGET:~/pshs/"$RESULTS_DIR/$(basename -- $file)""
+        scp -i $SSH_PEM "$file" $TARGET:~/pshs/"$RESULTS_DIR/$(basename -- $file)"
 	done
 
 if [ "$INIT" -eq 1 ]; then
