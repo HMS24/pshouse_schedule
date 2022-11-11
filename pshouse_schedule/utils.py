@@ -67,7 +67,9 @@ def generate_saved_filename():
 
 
 def _calculate_publish_day(day):
-    # edge case
-    if day == 21:
-        return 21
-    return (day // 11) * 10 + 1
+    if day < 11:
+        return '01'
+    elif 11 <= day < 21:
+        return '11'
+    else:
+        return '21'
