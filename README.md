@@ -1,4 +1,4 @@
-# pshouse schedule (pre-sale house schedule)
+# pre-sale house schedule
 
 實價登錄 ETL job
 
@@ -53,5 +53,5 @@
 └── run.sh                      # 執行 build and deploy 的 script
 ```
 
-## 雜
+## 其他
 [筆記](https://github.com/HMS24/pshouse_schedule/blob/master/assets/note.md)
